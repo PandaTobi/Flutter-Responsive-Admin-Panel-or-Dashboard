@@ -38,7 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('BottomNavigationBar Sample'),
+        title: const Text('School Dashboard'),
       ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
