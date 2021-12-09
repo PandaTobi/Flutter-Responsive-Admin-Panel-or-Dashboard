@@ -56,7 +56,7 @@ class _InputTextFieldState extends State<InputTextField> {
                     borderSide:
                     BorderSide(color: Theme.of(context).accentColor)),
                 filled: true,
-                fillColor: Colors.blueGrey[50],
+                fillColor: Colors.black,
                 prefixIcon: Icon(widget.prefixIcon,
                     color: Theme.of(context).accentColor)),
             keyboardType: widget.keyboardType,
