@@ -1,4 +1,7 @@
+import 'package:admin/screens/school_home/admin_classes_screen.dart';
+import 'package:admin/screens/school_home/admin_students_screen.dart';
 import 'package:admin/screens/school_home/school_home_screen.dart';
+import 'package:admin/screens/school_home/admin_home_screen.dart';
 import 'package:flutter/material.dart';
 
 /// This is the stateful widget that the main application instantiates.
@@ -15,15 +18,9 @@ class _HomeScreenState extends State<HomeScreen> {
   static const TextStyle optionStyle =
   TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static List<Widget> _widgetOptions = <Widget>[
-    SchoolHomeScreen(),
-    Text(
-      'Index 1: Business',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 2: School',
-      style: optionStyle,
-    ),
+    AdminHomeScreen(),
+    AdminClassesScreen(),
+    AdminStudentScreen()
   ];
 
   void _onItemTapped(int index) {
@@ -49,11 +46,11 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.business),
-            label: 'Business',
+            label: 'Classes',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.school),
-            label: 'School',
+            label: 'Students',
           ),
         ],
         currentIndex: _selectedIndex,
