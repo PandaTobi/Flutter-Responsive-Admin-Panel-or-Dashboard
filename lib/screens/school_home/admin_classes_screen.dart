@@ -132,9 +132,9 @@ class StudentScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenLayout(
-      pageTitle: 'News Page',
+      pageTitle: 'Class Page',
       child: Center(
-        child: Text('NEWS', style: TextStyle(color: Colors.green)),
+        child: Text('Put listview of students in here', style: TextStyle(color: Colors.green)),
       ),
     );
   }
