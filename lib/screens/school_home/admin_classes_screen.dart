@@ -1,6 +1,8 @@
 import 'package:admin/screens/login/login_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
+import 'dart:convert';
 import '../../constants.dart';
 import '../dashboard/dashboard_screen.dart';
 import '../main/main_screen.dart';
@@ -10,83 +12,46 @@ class AdminClassesScreen extends StatefulWidget {
   _AdminClassesState createState() => new _AdminClassesState();
 }
 
-class AppAction {
-  final Color color;
-  final String label;
-  final Color labelColor;
-  final IconData iconData;
-  final Color iconColor;
-  final void Function(BuildContext) callback;
 
-  AppAction({
+
+class ActionButton extends StatelessWidget {
+  Color? color;
+  String? label;
+  Color? labelColor;
+  IconData? iconData;
+  Color? iconColor;
+  late void Function(BuildContext) callback;
+
+  ActionButton({
     this.color = Colors.blueGrey,
-    this.label = "",
+    this.label,
     this.labelColor = Colors.white,
     this.iconData = Icons.ac_unit,
     this.iconColor = Colors.white,
     required this.callback,
-  });
-}
+});
 
-class ActionButton extends StatelessWidget {
-  final AppAction action;
 
-  const ActionButton({
-    Key key = const Key("any_key"),
-    required this.action,
-  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return OutlinedButton.icon(
-      onPressed: () => action.callback.call(context),
+      onPressed: () => callback.call(context),
       style: OutlinedButton.styleFrom(
-        backgroundColor: action.color,
+        backgroundColor: color,
         padding: const EdgeInsets.all(16.0),
       ),
-      label: Text(action.label, style: TextStyle(color: action.labelColor)),
-      icon: Icon(action.iconData, color: action.iconColor),
+      label: Text(label!, style: TextStyle(color: labelColor)),
+      icon: Icon(iconData, color: iconColor),
     );
   }
 }
 
-final List<AppAction> actions = [
-  AppAction(
-    label: 'Class1',
-    iconData: Icons.class_,
-    callback: (context) {
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (_) => StudentScreen()));
-    },
-  ),
-  AppAction(
-    label: 'Class2',
-    iconData: Icons.class_,
-    callback: (context) {
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (_) => StudentScreen()));
-    },
-  ),
-  AppAction(
-    label: 'Class3',
-    iconData: Icons.class_,
-    callback: (context) {
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (_) => StudentScreen()));
-    },
-  ),
-  AppAction(
-    color: Colors.green.shade200,
-    label: 'Class4',
-    labelColor: Colors.black,
-    iconData: Icons.class_,
-    iconColor: Colors.green,
-    callback: (context) {
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (_) => StudentScreen()));
-    },
-  ),
-];
+final List<String> names = ["Class1", "Class2", "Class3", "Class4", ];
+
+
+
+// {}
 
 class _AdminClassesState extends State<AdminClassesScreen> {
 
@@ -95,6 +60,18 @@ class _AdminClassesState extends State<AdminClassesScreen> {
     super.initState();
   }
 
+  List _items = [];
+
+  Future<void> ReadJsonData() async {
+    //read json file
+    final jsondata = await rootBundle.loadString('assets/data.json');
+    //decode json data as list
+    final data = await json.decode(jsondata);
+    setState(() {
+      _items = data["classes"];
+    });
+  }
+  
   @override
   Widget build(BuildContext context) {
     return ScreenLayout(
@@ -102,14 +79,36 @@ class _AdminClassesState extends State<AdminClassesScreen> {
       child: Container(
         margin: EdgeInsets.all(10),
         padding: EdgeInsets.all(30.0),
-        child: ListView(
-              padding: const EdgeInsets.all(8),
-              children: actions.map((action) => ActionButton(action: action)).toList(),
+        child: FutureBuilder(
+          future: ReadJsonData(),
+          builder: (context, data)
+            {
+              ReadJsonData();
+
+              print(_items);
+
+              return ListView.builder(
+                padding: const EdgeInsets.all(8),
+                itemCount: _items.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Container(
+                    height: 50,
+                    width: 700,
+                    child: Center(child: ActionButton(
+                      label: _items[index]["name"],
+                      iconData: Icons.class_,
+                      callback: (context) {
+                      Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (_) => StudentScreen()));
+                    },)
+                  ));
+                });
+            }
+        )
 
 
-        ),
-      ),
-    );
+          ),
+        );
   }
 }
 
