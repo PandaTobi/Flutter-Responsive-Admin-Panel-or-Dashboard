@@ -1,6 +1,9 @@
 import 'package:admin/screens/login/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 
 import 'dart:convert';
 import '../../constants.dart';
@@ -71,6 +74,24 @@ class _AdminClassesState extends State<AdminClassesScreen> {
       _items = data["classes"];
     });
   }
+
+  void loadAll() {
+    var tempAllStatusList = [];
+    FirebaseFirestore.instance.collection("classes").get().then((value) {
+      // print(value);
+      value.docs.forEach((element) {
+        print(element.data());
+        // see what the format of the element.data()
+        // and then figure out how to add it to the list
+
+        // tempAllStatusList.add(statusRecord);
+      });
+    }).catchError((e) {
+      print("Failed to get the list");
+      print(e);
+      throw e;
+    });
+  }
   
   @override
   Widget build(BuildContext context) {
@@ -83,9 +104,7 @@ class _AdminClassesState extends State<AdminClassesScreen> {
           future: ReadJsonData(),
           builder: (context, data)
             {
-              ReadJsonData();
-
-              print(_items);
+              loadAll();
 
               return ListView.builder(
                 padding: const EdgeInsets.all(8),
