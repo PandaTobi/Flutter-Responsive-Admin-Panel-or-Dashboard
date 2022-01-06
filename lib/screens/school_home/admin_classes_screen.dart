@@ -61,6 +61,7 @@ class _AdminClassesState extends State<AdminClassesScreen> {
   @override
   void initState() {
     super.initState();
+    loadAll();
   }
 
   List _items = [];
@@ -76,15 +77,20 @@ class _AdminClassesState extends State<AdminClassesScreen> {
   }
 
   void loadAll() {
-    var tempAllStatusList = [];
+    _items = [];
     FirebaseFirestore.instance.collection("classes").get().then((value) {
       // print(value);
       value.docs.forEach((element) {
+        // var classRecord = element.data();
         print(element.data());
+        _items.add(element.data());
         // see what the format of the element.data()
         // and then figure out how to add it to the list
 
         // tempAllStatusList.add(statusRecord);
+      });
+      setState(() {
+
       });
     }).catchError((e) {
       print("Failed to get the list");
@@ -100,32 +106,22 @@ class _AdminClassesState extends State<AdminClassesScreen> {
       child: Container(
         margin: EdgeInsets.all(10),
         padding: EdgeInsets.all(30.0),
-        child: FutureBuilder(
-          future: ReadJsonData(),
-          builder: (context, data)
-            {
-              loadAll();
-
-              return ListView.builder(
-                padding: const EdgeInsets.all(8),
-                itemCount: _items.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Container(
-                    height: 50,
-                    width: 700,
-                    child: Center(child: ActionButton(
-                      label: _items[index]["name"],
-                      iconData: Icons.class_,
-                      callback: (context) {
+        child: ListView.builder(
+            padding: const EdgeInsets.all(8),
+            itemCount: _items.length,
+            itemBuilder: (BuildContext context, int index) {
+              return Container(
+                  height: 50,
+                  width: 700,
+                  child: Center(child: ActionButton(
+                    label: _items[index]["name"],
+                    iconData: Icons.class_,
+                    callback: (context) {
                       Navigator.of(context)
-                        .push(MaterialPageRoute(builder: (_) => StudentScreen()));
+                          .push(MaterialPageRoute(builder: (_) => StudentScreen()));
                     },)
                   ));
-                });
-            }
-        )
-
-
+            })
           ),
         );
   }

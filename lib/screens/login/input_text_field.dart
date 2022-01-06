@@ -38,7 +38,7 @@ class _InputTextFieldState extends State<InputTextField> {
                 });
               }
             },
-            autovalidate: _validate,
+            // autovalidate: _validate,
             obscureText: widget.hint == 'Password',
             decoration: new InputDecoration(
                 hintText: widget.hint,
