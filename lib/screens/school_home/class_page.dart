@@ -26,6 +26,21 @@ class ActionButton extends StatelessWidget {
     this.iconColor = Colors.white,
     required this.callback,
   });
+
+
+
+  @override
+  Widget build(BuildContext context) {
+    return OutlinedButton.icon(
+      onPressed: () => callback.call(context),
+      style: OutlinedButton.styleFrom(
+        backgroundColor: color,
+        padding: const EdgeInsets.all(16.0),
+      ),
+      label: Text(label!, style: TextStyle(color: labelColor)),
+      icon: Icon(iconData, color: iconColor),
+    );
+  }
 }
 
 class StudentScreen extends StatefulWidget {
@@ -45,7 +60,7 @@ class _StudentScreen extends State<StudentScreen> {
 
   void loadAll() {
     _items = [];
-    FirebaseFirestore.instance.collection("classes").get().then((value) {
+    FirebaseFirestore.instance.collection("students").get().then((value) {
       // print(value);
       value.docs.forEach((element) {
         // var classRecord = element.data();
