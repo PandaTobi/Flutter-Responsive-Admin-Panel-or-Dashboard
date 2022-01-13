@@ -1,9 +1,9 @@
 import 'package:admin/screens/login/login_screen.dart';
+import 'package:admin/screens/school_home/add_class.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 
 import 'dart:convert';
 import '../../constants.dart';
@@ -66,9 +66,6 @@ class _AdminClassesState extends State<AdminClassesScreen> {
 
   List _items = [];
 
-
-
-
   void loadAll() {
     _items = [];
     FirebaseFirestore.instance.collection("classes").get().then((value) {
@@ -93,43 +90,44 @@ class _AdminClassesState extends State<AdminClassesScreen> {
   }
 
   void addStudent (name) {
-    FirebaseFirestore.instance.collection('messages').push().set(name.toJson());
+    // FirebaseFirestore.instance.collection('messages').push().set(name.toJson());
 
   }
   
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Classes Page"),
+      appBar: AppBar(title: Text("Class Management")),
+      body: Container(
+          margin: EdgeInsets.all(10),
+          padding: EdgeInsets.all(30.0),
+          child: ListView.builder(
+              padding: const EdgeInsets.all(8),
+              itemCount: _items.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Container(
+                    height: 50,
+                    width: 700,
+                    child: Center(child: ActionButton(
+                      label: _items[index]["name"],
+                      iconData: Icons.class_,
+                      callback: (context) {
+                        Navigator.of(context)
+                            .push(MaterialPageRoute(builder: (_) => StudentScreen()));
+                      },)
+                    ));
+              })
       ),
-      body:
-            Container(
-                margin: EdgeInsets.all(10),
-                padding: EdgeInsets.all(30.0),
-                child: ListView.builder(
-                    padding: const EdgeInsets.all(8),
-                    itemCount: _items.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Container(
-                          height: 50,
-                          width: 700,
-                          child: Center(child: ActionButton(
-                            label: _items[index]["name"],
-                            iconData: Icons.class_,
-                            callback: (context) {
-                              Navigator.of(context)
-                                  .push(MaterialPageRoute(builder: (_) => StudentScreen()));
-                            },)
-                          ));
-                    })
-            ),
       floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
         onPressed: () {
-
+          Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => AddClassPage())
+          ).then((value) {
+            loadAll();
+          });
         },
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
       ),
     );
   }
@@ -147,6 +145,12 @@ class ScreenLayout extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text(pageTitle)),
       body: child,
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {
+
+        },
+      ),
     );
   }
 }
