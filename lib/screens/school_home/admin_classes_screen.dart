@@ -1,5 +1,6 @@
 import 'package:admin/screens/login/login_screen.dart';
 import 'package:admin/screens/school_home/add_class.dart';
+import 'package:admin/screens/school_home/edit_class_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -113,7 +114,7 @@ class _AdminClassesState extends State<AdminClassesScreen> {
                       iconData: Icons.class_,
                       callback: (context) {
                         Navigator.of(context)
-                            .push(MaterialPageRoute(builder: (_) => StudentScreen()));
+                            .push(MaterialPageRoute(builder: (_) => EditClassPage(_items[index]["id"])));
                       },)
                     ));
               })
