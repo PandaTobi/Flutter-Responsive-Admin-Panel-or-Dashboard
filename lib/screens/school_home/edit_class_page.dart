@@ -119,7 +119,19 @@ class _EditClassPageState extends State<EditClassPage> {
                 height: 50,
                 child: ElevatedButton(
                     onPressed: () {
-                      // update the class in Firebase Firestore
+                      // search in Firestore
+                      // TODO 1: Add a new search screen to show all students by default
+                      // TODO 2: Implement a typing-based filtering for the listview
+
+                      FirebaseFirestore.instance.collection("students").get().then((value) {
+
+                        value.docs.forEach((element) {
+                          print(element.data());
+                        });
+                      }).catchError((e) {
+                        print("Failed to update the class.");
+                        print(e);
+                      });
                     },
                     child: Text("Add Student")
                 ),
