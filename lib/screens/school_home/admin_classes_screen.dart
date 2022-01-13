@@ -66,15 +66,8 @@ class _AdminClassesState extends State<AdminClassesScreen> {
 
   List _items = [];
 
-  Future<void> ReadJsonData() async {
-    //read json file
-    final jsondata = await rootBundle.loadString('assets/data.json');
-    //decode json data as list
-    final data = await json.decode(jsondata);
-    setState(() {
-      _items = data["classes"];
-    });
-  }
+
+
 
   void loadAll() {
     _items = [];
@@ -98,34 +91,50 @@ class _AdminClassesState extends State<AdminClassesScreen> {
       throw e;
     });
   }
+
+  void addStudent (name) {
+    FirebaseFirestore.instance.collection('messages').push().set(name.toJson());
+
+  }
   
   @override
   Widget build(BuildContext context) {
-    return ScreenLayout(
-      pageTitle: 'Classes Page',
-      child: Container(
-        margin: EdgeInsets.all(10),
-        padding: EdgeInsets.all(30.0),
-        child: ListView.builder(
-            padding: const EdgeInsets.all(8),
-            itemCount: _items.length,
-            itemBuilder: (BuildContext context, int index) {
-              return Container(
-                  height: 50,
-                  width: 700,
-                  child: Center(child: ActionButton(
-                    label: _items[index]["name"],
-                    iconData: Icons.class_,
-                    callback: (context) {
-                      Navigator.of(context)
-                          .push(MaterialPageRoute(builder: (_) => StudentScreen()));
-                    },)
-                  ));
-            })
-          ),
-        );
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Classes Page"),
+      ),
+      body:
+            Container(
+                margin: EdgeInsets.all(10),
+                padding: EdgeInsets.all(30.0),
+                child: ListView.builder(
+                    padding: const EdgeInsets.all(8),
+                    itemCount: _items.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Container(
+                          height: 50,
+                          width: 700,
+                          child: Center(child: ActionButton(
+                            label: _items[index]["name"],
+                            iconData: Icons.class_,
+                            callback: (context) {
+                              Navigator.of(context)
+                                  .push(MaterialPageRoute(builder: (_) => StudentScreen()));
+                            },)
+                          ));
+                    })
+            ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+
+        },
+        tooltip: 'Increment',
+        child: const Icon(Icons.add),
+      ),
+    );
   }
 }
+
 
 class ScreenLayout extends StatelessWidget {
   final String pageTitle;
