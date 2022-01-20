@@ -116,7 +116,7 @@ class _StudentScreen extends State<StudentScreen> {
         onPressed: () {
           Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => StudentList())
+              MaterialPageRoute(builder: (context) => AddClassPage())
           ).then((value) {
             loadAll();
           });

@@ -24,6 +24,45 @@ class _EditClassPageState extends State<EditClassPage> {
     // TODO: implement initState
     super.initState();
     loadClass(widget.studentId);
+    loadAll();
+  }
+
+  List _items = [];
+
+  List id_list = [];
+
+  Future<void> loadAll() async {
+    _items = [];
+    FirebaseFirestore.instance.collection("students").get().then((value) {
+      // print(value);
+      value.docs.forEach((element) {
+        // var classRecord = element.data();
+        print(element.data());
+        _items.add(element.data());
+        // see what the format of the element.data()
+        // and then figure out how to add it to the list
+
+        // tempAllStatusList.add(statusRecord);
+      });
+      setState(() {
+
+      });
+    }).catchError((e) {
+      print("Failed to get the list");
+      print(e);
+      throw e;
+    });
+
+    id_list = await FirebaseFirestore.instance
+        .collection('classes')
+        .doc(widget.studentId)
+        .get()
+        .then((value) {
+      return value.data()!['student_list']; // Access your after your get the data
+    }) as List;
+
+    print("######################## ID LIST HERE #############################");
+    print(id_list);
   }
 
   void loadClass(stuId) {
@@ -139,12 +178,35 @@ class _EditClassPageState extends State<EditClassPage> {
 
                       Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => StudentList())
+                          MaterialPageRoute(builder: (context) => StudentList(class_id: widget.studentId))
                       );
                     },
                     child: Text("Add Student")
                 ),
               ),
+              Flexible(
+                child: ListView.builder(
+                    padding: const EdgeInsets.all(8),
+                    itemCount: _items.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      if (id_list.contains(_items[index]["id"])){
+                        return Container(
+                            height: 50,
+                            width: 700,
+                            child: Center(child: ActionButton(
+                              label: _items[index]["name"],
+                              iconData: Icons.class_,
+                              callback: (context) {
+                                // do something here
+
+                              },)
+                            ));
+                      } else {
+                        return Container();
+                      }
+                    }),
+              ),
+
             ],
           ),
         ),

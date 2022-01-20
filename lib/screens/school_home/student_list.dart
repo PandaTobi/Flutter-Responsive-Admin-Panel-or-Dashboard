@@ -47,6 +47,10 @@ class ActionButton extends StatelessWidget {
 }
 
 class StudentList extends StatefulWidget {
+  const StudentList({Key? key, required this.class_id}) : super(key: key);
+
+  final String class_id;
+
   @override
   _StudentList createState() => new _StudentList();
 }
@@ -86,11 +90,6 @@ class _StudentList extends State<StudentList> {
     });
   }
 
-  void addStudent (name) {
-    // FirebaseFirestore.instance.collection('messages').push().set(name.toJson());
-
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -126,8 +125,9 @@ class _StudentList extends State<StudentList> {
                           label: _items[index]["name"],
                           iconData: Icons.class_,
                           callback: (context) {
-                            Navigator.of(context)
-                                .push(MaterialPageRoute(builder: (_) => EditStudentPage(_items[index]["id"]))); // add student button PLACEHODLER
+                            // add student button PLACEHODLE
+                            FirebaseFirestore.instance.collection('classes').doc(widget.class_id).set({'student_list': FieldValue.arrayUnion([_items[index]["id"]])}, SetOptions(merge: true));
+
                           },)
                         ));
                       } else {
