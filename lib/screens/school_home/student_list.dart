@@ -46,13 +46,15 @@ class ActionButton extends StatelessWidget {
   }
 }
 
-class AdminStudentScreen extends StatefulWidget {
+class StudentList extends StatefulWidget {
   @override
-  _AdminStudentScreen createState() => new _AdminStudentScreen();
+  _StudentList createState() => new _StudentList();
 }
 
 
-class _AdminStudentScreen extends State<AdminStudentScreen> {
+class _StudentList extends State<StudentList> {
+  TextEditingController _textController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -96,34 +98,48 @@ class _AdminStudentScreen extends State<AdminStudentScreen> {
       body: Container(
           margin: EdgeInsets.all(10),
           padding: EdgeInsets.all(30.0),
-          child: ListView.builder(
-              padding: const EdgeInsets.all(8),
-              itemCount: _items.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Container(
-                    height: 50,
-                    width: 700,
-                    child: Center(child: ActionButton(
-                      label: _items[index]["name"],
-                      iconData: Icons.class_,
-                      callback: (context) {
-                        Navigator.of(context)
-                            .push(MaterialPageRoute(builder: (_) => EditStudentPage(_items[index]["id"])));
-                      },)
-                    ));
-              })
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: TextField(
+                  onChanged: (value) {
+                    setState(() {});
+                  },
+                  controller: _textController,
+                  decoration: InputDecoration(
+                    hintText: 'Search Here...',
+                  ),
+                ),
+              ),
+              Flexible(
+                child: ListView.builder(
+                  padding: const EdgeInsets.all(8),
+                  itemCount: _items.length,
+                  itemBuilder: (BuildContext context, int index) {
+                  if (_textController.text.isEmpty ||
+                      _items[index]["name"].toString().toLowerCase().contains(_textController.text)){
+                    return Container(
+                        height: 50,
+                        width: 700,
+                        child: Center(child: ActionButton(
+                          label: _items[index]["name"],
+                          iconData: Icons.class_,
+                          callback: (context) {
+                            Navigator.of(context)
+                                .push(MaterialPageRoute(builder: (_) => EditStudentPage(_items[index]["id"]))); // add student button PLACEHODLER
+                          },)
+                        ));
+                      } else {
+                      return Container();
+                      }
+                  }),
+              ),
+
+            ]
+          )
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => AddStudentPage())
-          ).then((value) {
-            loadAll();
-          });
-        },
-      ),
+
     );
   }
 }

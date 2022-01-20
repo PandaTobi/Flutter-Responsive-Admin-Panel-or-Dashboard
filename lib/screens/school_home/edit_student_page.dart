@@ -1,23 +1,20 @@
-import 'package:admin/screens/school_home/student_list.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class EditClassPage extends StatefulWidget {
+class EditStudentPage extends StatefulWidget {
 
   String studentId;
 
-  EditClassPage(this.studentId);
+  EditStudentPage(this.studentId);
 
   @override
-  _EditClassPageState createState() => _EditClassPageState();
+  _EditStudentPageState createState() => _EditStudentPageState();
 }
 
-class _EditClassPageState extends State<EditClassPage> {
-
+class _EditStudentPageState extends State<EditStudentPage> {
 
   TextEditingController idController = TextEditingController();
   TextEditingController nameController = TextEditingController();
-  TextEditingController descriptionController = TextEditingController();
 
   @override
   void initState() {
@@ -27,22 +24,19 @@ class _EditClassPageState extends State<EditClassPage> {
   }
 
   void loadClass(stuId) {
-      // _items = [];
-    print("this si executing");
+    // _items = [];
+    FirebaseFirestore.instance.collection("classes").doc(stuId).get().then((value) {
+      print(value.data());
+      idController.text = value.data()!['id'];
+      nameController.text = value.data()!['name'];
+      setState(() {
 
-      FirebaseFirestore.instance.collection("classes").doc(stuId).get().then((value) {
-        print(value.data());
-        idController.text = value.data()!['id'];
-        nameController.text = value.data()!['name'];
-        descriptionController.text = value.data()!['description'];
-        setState(() {
-
-        });
-      }).catchError((e) {
-        print("Failed to get the list");
-        print(e);
-        throw e;
       });
+    }).catchError((e) {
+      print("Failed to get the list");
+      print(e);
+      throw e;
+    });
   }
 
   @override
@@ -79,15 +73,6 @@ class _EditClassPageState extends State<EditClassPage> {
               SizedBox(
                 height: 10,
               ),
-              TextField(
-                controller: descriptionController,
-                obscureText: false,
-                style: TextStyle(color: Colors.white),
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Description',
-                ),
-              ),
               SizedBox(
                 height: 10,
               ),
@@ -100,7 +85,6 @@ class _EditClassPageState extends State<EditClassPage> {
                       var classRecord = {
                         "id" : idController.text,
                         "name" : nameController.text,
-                        "description" : descriptionController.text
                       };
 
                       FirebaseFirestore.instance.collection("classes").doc(widget.studentId).set(classRecord).then((value) {
@@ -123,24 +107,7 @@ class _EditClassPageState extends State<EditClassPage> {
                 height: 50,
                 child: ElevatedButton(
                     onPressed: () {
-                      // search in Firestore
-                      // TODO 1: Add a new search screen to show all students by default
-                      // TODO 2: Implement a typing-based filtering for the listview
-
-                      FirebaseFirestore.instance.collection("students").get().then((value) {
-
-                        value.docs.forEach((element) {
-                          print(element.data());
-                        });
-                      }).catchError((e) {
-                        print("Failed to update the class.");
-                        print(e);
-                      });
-
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => StudentList())
-                      );
+                      // update the class in Firebase Firestore
                     },
                     child: Text("Add Student")
                 ),

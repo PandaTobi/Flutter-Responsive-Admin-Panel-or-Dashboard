@@ -1,5 +1,6 @@
 import 'package:admin/screens/login/login_screen.dart';
 import 'package:admin/screens/school_home/add_class.dart';
+import 'package:admin/screens/school_home/student_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -115,7 +116,7 @@ class _StudentScreen extends State<StudentScreen> {
         onPressed: () {
           Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => AddClassPage())
+              MaterialPageRoute(builder: (context) => StudentList())
           ).then((value) {
             loadAll();
           });
