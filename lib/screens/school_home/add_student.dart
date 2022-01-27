@@ -1,5 +1,8 @@
+import 'package:camera/camera.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+
+import 'camera.dart';
 
 class AddStudentPage extends StatefulWidget {
   @override
@@ -10,6 +13,8 @@ class _AddStudentPageState extends State<AddStudentPage> {
 
   TextEditingController idController = TextEditingController();
   TextEditingController nameController = TextEditingController();
+
+  var url;
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +50,24 @@ class _AddStudentPageState extends State<AddStudentPage> {
               SizedBox(
                 height: 10,
               ),
+              ElevatedButton(
+                  onPressed:  () async {
+                    WidgetsFlutterBinding.ensureInitialized();
+
+                    // Obtain a list of the available cameras on the device.
+                    final cameras = await availableCameras();
+                    final firstCamera = cameras.first;
+                    url = await Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => TakePictureScreen(camera: firstCamera))
+                    );
+
+                    print(url);
+                  },
+                  child: Text(
+                    "Take a photo"
+                  )
+              ),
               Container(
                 width: double.infinity,
                 height: 50,
@@ -70,6 +93,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                             var classRecord = {
                               "id" : idController.text,
                               "name" : nameController.text,
+                              "profile_url": url,
                             };
 
                             FirebaseFirestore.instance.collection("students").doc(id).set(classRecord).then((value) {

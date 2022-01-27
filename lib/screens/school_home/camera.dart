@@ -79,16 +79,18 @@ class TakePictureScreenState extends State<TakePictureScreen> {
 
 
             // If the picture was taken, display it on a new screen.
-            await Navigator.of(context).push(
+            var url = await Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (context) => DisplayPictureScreen(
-                  // Pass the automatically generated path to
-                  // the DisplayPictureScreen widget.
 
                   imagePath: image.path,
                 ),
               ),
             );
+
+            Navigator.pop(context, url);
+
+
           } catch (e) {
             // If an error occurs, log the error to the console.
             print(e);
@@ -117,26 +119,32 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Display the Picture')),
+      appBar: AppBar(title: const Text('Upload The Picture')),
       // The image is stored as a file on the device. Use the `Image.file`
       // constructor with the given path to display the image.
       body: Image.file(i.File(widget.imagePath)),
-
       floatingActionButton: FloatingActionButton(
         onPressed: () {
+          print("the upload button was pressed");
+
           var fileName = "product-" + DateTime.now().millisecondsSinceEpoch.toString() + '.png';
           FirebaseStorage.instance.ref().child("products/"+ "dummyid" + "/" + fileName).putFile(i.File(widget.imagePath)).then((taskEvent) {
             if (taskEvent.state == TaskState.success) {
+
               FirebaseStorage.instance.ref().child("products/"+ "dummyid" + "/" + fileName).getDownloadURL()
                 .then((value) {
+                  print(value.toString());
                   Navigator.pop(context, value.toString());
+
                 }).catchError((error) {
                   print("Failed to get the URL");
                 });
             }
         });
+
+
       },
-        child: const Icon(Icons.camera_alt),)
+        child: const Icon(Icons.add),)
     );
   }
 }
