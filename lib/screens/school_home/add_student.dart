@@ -59,7 +59,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                     final firstCamera = cameras.first;
                     url = await Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => TakePictureScreen(camera: firstCamera))
+                        MaterialPageRoute(builder: (context) => TakePictureScreen(camera: firstCamera, useLocalPath: false,))
                     );
 
                     print(url);
