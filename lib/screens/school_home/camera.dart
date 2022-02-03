@@ -9,9 +9,11 @@ class TakePictureScreen extends StatefulWidget {
   const TakePictureScreen({
     Key? key,
     required this.camera,
+    required this.useLocalPath
   }) : super(key: key);
 
   final CameraDescription camera;
+  final bool useLocalPath;
 
   @override
   TakePictureScreenState createState() => TakePictureScreenState();
@@ -76,23 +78,20 @@ class TakePictureScreenState extends State<TakePictureScreen> {
             // where it was saved.
             final image = await _controller.takePicture();
 
-
-
             // If the picture was taken, display it on a new screen.
-            var url = await Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => DisplayPictureScreen(
-
-                  imagePath: image.path,
+            if (widget.useLocalPath) {
+              Navigator.pop(context, image.path);
+            } else {
+              var url = await Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => DisplayPictureScreen(
+                    imagePath: image.path,
+                  ),
                 ),
-              ),
-            );
-
-            Navigator.pop(context, url);
-
-
+              );
+              Navigator.pop(context, url);
+            }
           } catch (e) {
-            // If an error occurs, log the error to the console.
             print(e);
           }
         },
