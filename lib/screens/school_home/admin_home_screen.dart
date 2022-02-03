@@ -1,17 +1,18 @@
+import 'dart:html';
 import 'dart:typed_data';
 
 import 'package:admin/screens/login/login_screen.dart';
 import 'package:admin/screens/school_home/camera.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:aws_rekognition_api/rekognition-2016-06-27.dart';
+import 'package:aws_rekognition_api/rekognition-2016-06-27.dart' as Rekog;
 import 'package:flutter/services.dart' show rootBundle;
 
 import '../../constants.dart';
 import '../dashboard/dashboard_screen.dart';
 import '../main/main_screen.dart';
 
-var credentials = AwsClientCredentials(secretKey: '4tHP09vwWbnvlHtYmJzereOm3E/RkUgFpMLKfv6/', accessKey: 'AKIAZADLXOUB3433QRUY');
+var credentials = Rekog.AwsClientCredentials(secretKey: '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', accessKey: 'AKIAZADLXOUB3433QRUY');
 
 class AdminHomeScreen extends StatefulWidget {
   @override
@@ -20,7 +21,7 @@ class AdminHomeScreen extends StatefulWidget {
 
 class _AdminHomeState extends State<AdminHomeScreen> {
 
-  var service = Rekognition(region: 'us-west-1', credentials: credentials);
+  var service = Rekog.Rekognition(region: 'us-west-1', credentials: credentials);
 
   @override
   void initState() {
@@ -61,9 +62,10 @@ class _AdminHomeState extends State<AdminHomeScreen> {
               ElevatedButton(
                   onPressed: () async {
                     // how to create a collection
-                    ByteData bytes = await rootBundle.load('assets/images/yutest.jpeg');
-                    var image = Image Image(bytes: bytes);
-                    service.indexFaces(collectionId: "andyproject", image: );
+                    Uint8List bytes = (await rootBundle.load('assets/images/yutest.jpeg')).buffer.asUint8List();
+
+                    var image = Rekog.Image(bytes: bytes);
+                    service.indexFaces(collectionId: "andyproject", image: image);
                   },
                   child: Text("Index Face")
               ),
