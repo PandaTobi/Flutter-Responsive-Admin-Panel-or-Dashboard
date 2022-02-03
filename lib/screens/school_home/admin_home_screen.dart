@@ -1,8 +1,11 @@
+import 'dart:typed_data';
+
 import 'package:admin/screens/login/login_screen.dart';
 import 'package:admin/screens/school_home/camera.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:aws_rekognition_api/rekognition-2016-06-27.dart';
+import 'package:flutter/services.dart' show rootBundle;
 
 import '../../constants.dart';
 import '../dashboard/dashboard_screen.dart';
@@ -53,8 +56,17 @@ class _AdminHomeState extends State<AdminHomeScreen> {
                       print("Failed to create a collection!");
                     });
                   },
-                  child: Text("Test1")
-              )
+                  child: Text("Create a Collection")
+              ),
+              ElevatedButton(
+                  onPressed: () async {
+                    // how to create a collection
+                    ByteData bytes = await rootBundle.load('assets/images/yutest.jpeg');
+                    var image = Image Image(bytes: bytes);
+                    service.indexFaces(collectionId: "andyproject", image: );
+                  },
+                  child: Text("Index Face")
+              ),
             ],
           ),
         ),
