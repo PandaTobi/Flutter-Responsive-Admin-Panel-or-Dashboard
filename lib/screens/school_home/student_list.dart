@@ -122,7 +122,7 @@ class _StudentList extends State<StudentList> {
                         height: 50,
                         width: 700,
                         child: Center(child: ActionButton(
-                          label: _items[index]["name"],
+                          label: _items[index]["name"] + _items[index]["profile_url"],
                           iconData: Icons.class_,
                           callback: (context) {
                             // add student button PLACEHODLE

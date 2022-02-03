@@ -17,7 +17,7 @@ class ActionButton extends StatelessWidget {
   Color? color;
   String? label;
   Color? labelColor;
-  IconData? iconData;
+  String iconData;
   Color? iconColor;
   late void Function(BuildContext) callback;
 
@@ -25,7 +25,7 @@ class ActionButton extends StatelessWidget {
     this.color = Colors.blueGrey,
     this.label,
     this.labelColor = Colors.white,
-    this.iconData = Icons.ac_unit,
+    required this.iconData,
     this.iconColor = Colors.white,
     required this.callback,
   });
@@ -41,7 +41,7 @@ class ActionButton extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
       ),
       label: Text(label!, style: TextStyle(color: labelColor)),
-      icon: Icon(iconData, color: iconColor),
+      icon: Image.network(iconData),
     );
   }
 }
@@ -105,7 +105,7 @@ class _AdminStudentScreen extends State<AdminStudentScreen> {
                     width: 700,
                     child: Center(child: ActionButton(
                       label: _items[index]["name"],
-                      iconData: Icons.class_,
+                      iconData: _items[index]["profile_url"],
                       callback: (context) {
                         Navigator.of(context)
                             .push(MaterialPageRoute(builder: (_) => EditStudentPage(_items[index]["id"])));
