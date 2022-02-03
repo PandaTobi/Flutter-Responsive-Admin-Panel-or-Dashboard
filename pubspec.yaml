@@ -44,6 +44,8 @@ dependencies:
   data_table_2: ^2.0.3
   intl: 0.17.0
 
+  aws_rekognition_api: ^1.2.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
