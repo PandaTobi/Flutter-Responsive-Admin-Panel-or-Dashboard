@@ -13,6 +13,7 @@ import 'package:path_provider/path_provider.dart';
 import '../../constants.dart';
 import '../dashboard/dashboard_screen.dart';
 import '../main/main_screen.dart';
+import 'face_detector/FaceDetectorView.dart';
 
 
 var credentials = rek.AwsClientCredentials(secretKey: '4tHP09vwWbnvlHtYmJzereOm3E/RkUgFpMLKfv6/', accessKey: 'AKIAZADLXOUB3433QRUY');
@@ -66,7 +67,7 @@ class _AdminHomeState extends State<AdminHomeScreen> {
               ElevatedButton(
                   onPressed: () async {
                     // how to create a collection
-                    ByteData bytes = await rootBundle.load('assets/images/yutest.jpeg');
+                    ByteData bytes = await rootBundle.load('assets/images/andytest.jpg');
                     // File file = await getImageFileFromAssets('assets/images/yutest.jpeg');
                     // Uint8List bytes = file.readAsBytesSync();
                     var image = rek.Image(bytes: bytes.buffer.asUint8List());
@@ -112,6 +113,12 @@ class _AdminHomeState extends State<AdminHomeScreen> {
                   },
                   child: Text("Search Face")
               ),
+
+              CustomCard(
+                'Face Detector',
+                FaceDetectorView(),
+                featureCompleted: true,
+              ),
             ],
           ),
         ),
@@ -137,3 +144,38 @@ class _AdminHomeState extends State<AdminHomeScreen> {
     );
   }
 }
+
+class CustomCard extends StatelessWidget {
+  final String _label;
+  final Widget _viewPage;
+  final bool featureCompleted;
+
+  const CustomCard(this._label, this._viewPage,
+      {this.featureCompleted = false});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 5,
+      margin: EdgeInsets.only(bottom: 10),
+      child: ListTile(
+        tileColor: Theme.of(context).primaryColor,
+        title: Text(
+          _label,
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+        onTap: () {
+          if (Platform.isIOS && !featureCompleted) {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: const Text(
+                    'This feature has not been implemented for iOS yet')));
+          } else
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => _viewPage));
+        },
+      ),
+    );
+  }
+}
+
+

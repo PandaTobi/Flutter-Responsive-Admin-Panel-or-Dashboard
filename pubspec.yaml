@@ -27,6 +27,7 @@ dependencies:
   firebase_auth: ^3.3.4
   cloud_firestore: ^3.1.5
   firebase_storage: ^9.0.0
+  image_picker: ^0.7.2
 
   camera:
   path_provider:
@@ -43,6 +44,8 @@ dependencies:
   provider: ^5.0.0
   data_table_2: ^2.0.3
   intl: 0.17.0
+  native_screenshot: ^1.0.0
+  google_ml_kit:
 
   aws_rekognition_api: ^1.2.0
 

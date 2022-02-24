@@ -2,6 +2,7 @@ import 'package:admin/constants.dart';
 import 'package:admin/controllers/MenuController.dart';
 import 'package:admin/screens/main/main_screen.dart';
 import 'package:admin/screens/splash/splash_screen.dart';
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -11,11 +12,15 @@ import 'package:firebase_core/firebase_core.dart';
 
 import 'screens/main/main_screen.dart';
 
+List<CameraDescription> cameras = [];
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
 //    options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  cameras = await availableCameras();
   runApp(MyApp());
 }
 

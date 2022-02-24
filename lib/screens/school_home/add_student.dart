@@ -96,17 +96,23 @@ class _AddStudentPageState extends State<AddStudentPage> {
                               "profile_url": url,
                             };
 
+
+
                             FirebaseFirestore.instance.collection("students").doc(id).set(classRecord).then((value) {
                               print("Student added successfully.");
                               Navigator.pop(context);
                             }).catchError((e) {
                               print("Failed to add class.");
                               print(e);
+
+
                             });
                           }
                         }).catchError((e) {
                           print("Failed to add class");
                           print(e);
+
+
                         });
                       }
                     },
