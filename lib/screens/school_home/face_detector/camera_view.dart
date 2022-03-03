@@ -17,12 +17,15 @@ class CameraView extends StatefulWidget {
       required this.title,
       required this.customPaint,
       required this.onImage,
+        required this.onRegImage,
       this.initialDirection = CameraLensDirection.back})
       : super(key: key);
 
   final String title;
   final CustomPaint? customPaint;
   final Function(InputImage inputImage) onImage;
+  final Function(Image inputImage) onRegImage;
+
   final CameraLensDirection initialDirection;
 
   @override
@@ -242,7 +245,9 @@ class _CameraViewState extends State<CameraView> {
     setState(() {
       _image = File(pickedFile.path);
     });
+    final regImage = Image.file(File(pickedFile.path));
     final inputImage = InputImage.fromFilePath(pickedFile.path);
+    widget.onRegImage(regImage);
     widget.onImage(inputImage);
   }
 
@@ -285,6 +290,9 @@ class _CameraViewState extends State<CameraView> {
     final inputImage =
         InputImage.fromBytes(bytes: bytes, inputImageData: inputImageData);
 
+    final regImage = Image.memory(bytes);
+
     widget.onImage(inputImage);
+    widget.onRegImage(regImage);
   }
 }

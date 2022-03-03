@@ -8,6 +8,7 @@ import 'package:aws_rekognition_api/rekognition-2016-06-27.dart' as rek;
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
+import 'package:path_provider/path_provider.dart';
 import 'camera_view.dart';
 import 'painters/face_detector_painter.dart';
 
@@ -21,6 +22,7 @@ class FaceDetectorView extends StatefulWidget {
 
 class _FaceDetectorViewState extends State<FaceDetectorView> {
   static String imagePath = "";
+  static bool faceDetected = false;
   bool keepScreenshotting = true;
 
   FaceDetector faceDetector =
@@ -44,14 +46,32 @@ class _FaceDetectorViewState extends State<FaceDetectorView> {
       title: 'Face Detector',
       customPaint: customPaint,
       onImage: (inputImage) {
+
         processImage(inputImage);
+
+
+
+        // TODO: if face, grab input image
+      },
+      onRegImage: (regImage) {
+        print("FOUND FACE FACE FACE 1984");
+
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => DisplayPictureScreen(
+              imagePath: regImage,
+            ),
+          ),
+        );
       },
       initialDirection: CameraLensDirection.front,
     );
   }
 
   Future<void> processImage(InputImage inputImage) async {
-    if (isBusy) return;
+    if (isBusy) {
+      return;
+    }
     isBusy = true;
     final faces = await faceDetector.processImage(inputImage);
     print('Found ${faces.length} faces');
@@ -63,18 +83,22 @@ class _FaceDetectorViewState extends State<FaceDetectorView> {
           inputImage.inputImageData!.imageRotation);
       customPaint = CustomPaint(painter: painter);
 
+      if (faces.length > 0) {
+        faceDetected = true;
+      }
+
       print("this is running");
 
-      if (faces.length > 0) {
-        if (keepScreenshotting) {
-          takeScreenShot();
-          keepScreenshotting = false;
-
-          // TODO: turn keeepScreenshotting into an array of faces detected
-        }
-
-        // TODO: stop after one
-      }
+      // if (faces.length > 0) {
+      //   if (keepScreenshotting) {
+      //     takeScreenShot();
+      //     keepScreenshotting = false;
+      //
+      //     // TODO: turn keeepScreenshotting into an array of faces detected
+      //   }
+      //
+      //   // TODO: stop after one
+      // }
 
     } else {
       customPaint = null;
@@ -84,34 +108,31 @@ class _FaceDetectorViewState extends State<FaceDetectorView> {
       setState(() {});
     }
 
-
   }
 
-  Future<void> takeScreenShot() async {
-
-    String? path = await NativeScreenshot.takeScreenshot();
-    debugPrint('Screenshot taken, path: $path');
-
-
-    // redirect to page displaying image
-    if (path != null) {
-      imagePath = path as String;
-    }
-
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => DisplayPictureScreen(
-          imagePath: imagePath,
-        ),
-      ),
-    );
-  }
+  // Future<void> takeScreenShot() async {
+  //
+  //   String? path = await NativeScreenshot.takeScreenshot();
+  //   debugPrint('Screenshot taken, path: $path');
+  //
+  //
+  //   // redirect to page displaying image
+  //   if (path != null) {
+  //     imagePath = path as String;
+  //   }
+  //
+  //   Navigator.of(context).push(
+  //     MaterialPageRoute(
+  //       builder: (context) => DisplayPictureScreen(
+  //         imagePath: imagePath,
+  //       ),
+  //     ),
+  //   );
+  // }
 }
 
 class DisplayPictureScreen extends StatefulWidget {
-  final String? imagePath;
-
-
+  final Image imagePath;
 
   const DisplayPictureScreen({Key? key, required this.imagePath})
       : super(key: key);
@@ -134,7 +155,7 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
       body: Column(
           children: [
             Expanded(
-                child: Image.file(File(_FaceDetectorViewState.imagePath))
+                child: widget.imagePath //Image.file(File(_FaceDetectorViewState.imagePath))
             ),
             ElevatedButton(
                 onPressed: () async {
