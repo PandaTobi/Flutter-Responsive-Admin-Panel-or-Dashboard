@@ -14,8 +14,7 @@ import 'package:path_provider/path_provider.dart';
 import '../../constants.dart';
 import '../dashboard/dashboard_screen.dart';
 import '../main/main_screen.dart';
-import 'face_detector/FaceDetectorView.dart';
-
+import 'face_detector/face_detectorview.dart';
 
 var credentials = rek.AwsClientCredentials(secretKey: '4tHP09vwWbnvlHtYmJzereOm3E/RkUgFpMLKfv6/', accessKey: 'AKIAZADLXOUB3433QRUY');
 
