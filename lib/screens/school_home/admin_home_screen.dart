@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:admin/screens/login/login_screen.dart';
 import 'package:admin/screens/school_home/camera.dart';
+import 'package:admin/screens/school_home/face_detector/detected_information.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:aws_rekognition_api/rekognition-2016-06-27.dart' as rek;
@@ -113,7 +114,22 @@ class _AdminHomeState extends State<AdminHomeScreen> {
                   },
                   child: Text("Search Face")
               ),
-
+              ElevatedButton(
+                  onPressed: () async {
+                    ByteData bytes = await rootBundle.load('assets/images/andytest.jpg');
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => faceDetectedScreen(
+                            studentName: "Andy",
+                            profilePhoto: Image.memory(bytes.buffer.asUint8List()),
+                            classes: ["Math", "English"])
+                        )
+                    );
+                  },
+                  child: Text(
+                      "ON FACE DETECTED SCREEN"
+                  )
+              ),
               CustomCard(
                 'Face Detector',
                 FaceDetectorView(),
