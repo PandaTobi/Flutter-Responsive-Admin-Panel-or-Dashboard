@@ -64,15 +64,10 @@ class _AdminStudentScreen extends State<AdminStudentScreen> {
   void loadAll() {
     _items = [];
     FirebaseFirestore.instance.collection("students").get().then((value) {
-      // print(value);
       value.docs.forEach((element) {
-        // var classRecord = element.data();
-        print(element.data());
         _items.add(element.data());
-        // see what the format of the element.data()
-        // and then figure out how to add it to the list
 
-        // tempAllStatusList.add(statusRecord);
+
       });
       setState(() {
 
@@ -82,11 +77,6 @@ class _AdminStudentScreen extends State<AdminStudentScreen> {
       print(e);
       throw e;
     });
-  }
-
-  void addStudent (name) {
-    // FirebaseFirestore.instance.collection('messages').push().set(name.toJson());
-
   }
 
   @override

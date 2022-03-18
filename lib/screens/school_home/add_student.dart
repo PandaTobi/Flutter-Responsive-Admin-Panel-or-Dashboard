@@ -1,8 +1,14 @@
+import 'dart:typed_data';
+
 import 'package:camera/camera.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:aws_rekognition_api/rekognition-2016-06-27.dart' as rek;
+import 'package:flutter/services.dart';
 
 import 'camera.dart';
+
+var credentials = rek.AwsClientCredentials(secretKey: '4tHP09vwWbnvlHtYmJzereOm3E/RkUgFpMLKfv6/', accessKey: 'AKIAZADLXOUB3433QRUY');
 
 class AddStudentPage extends StatefulWidget {
   @override
@@ -15,6 +21,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
   TextEditingController nameController = TextEditingController();
 
   var url;
+  var service = rek.Rekognition(region: 'us-west-1', credentials: credentials);
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +88,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                       } else {
                         // how to save the data to FireStore
                         var id = idController.text.toString();
-                        FirebaseFirestore.instance.collection("students").doc(id).get().then((value) {
+                        FirebaseFirestore.instance.collection("students").doc(id).get().then((value) async {
                           if (value.exists) {
                             print("Document exist.");
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -96,7 +103,26 @@ class _AddStudentPageState extends State<AddStudentPage> {
                               "profile_url": url,
                             };
 
+                            Uint8List bytes = (await NetworkAssetBundle(Uri.parse(url)).load(url))
+                              .buffer
+                              .asUint8List();
 
+                            print("SERVICE INIT");
+
+                            var image = rek.Image(bytes: bytes);
+
+                            service.indexFaces(collectionId: "andyproject", image: image, externalImageId: idController.text)
+                                .then((value) {
+                              print("Successfully indexed the image.");
+                              print(value.faceRecords);
+                            }).catchError((e) {
+                              print("Failed to index the image.");
+                              print(e);
+                            });
+
+                            print("IDEXED?");
+
+                            print(bytes);
 
                             FirebaseFirestore.instance.collection("students").doc(id).set(classRecord).then((value) {
                               print("Student added successfully.");
@@ -104,9 +130,9 @@ class _AddStudentPageState extends State<AddStudentPage> {
                             }).catchError((e) {
                               print("Failed to add class.");
                               print(e);
-
-
                             });
+
+
                           }
                         }).catchError((e) {
                           print("Failed to add class");

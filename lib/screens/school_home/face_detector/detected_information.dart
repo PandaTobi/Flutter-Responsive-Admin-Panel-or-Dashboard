@@ -17,12 +17,12 @@ class faceDetectedScreen extends StatefulWidget {
   const faceDetectedScreen({
     Key? key,
     required this.studentName,
-    required this.profilePhoto,
+    // required this.profilePhoto,
     required this.classes,
   }) : super(key: key);
 
   final String studentName;
-  final Image profilePhoto;
+  // final Image profilePhoto;
   final classes; // String array of class names
 
   @override
@@ -64,19 +64,45 @@ class ActionButton extends StatelessWidget {
   }
 }
 
-
-// {}
-
 class _faceDetectedScreen extends State<faceDetectedScreen> {
 
   @override
   void initState() {
     super.initState();
+    loadAll();
   }
 
   List _items = [];
+  List profilePhoto = [];
 
+  void loadAll() {
+    _items = [];
+    FirebaseFirestore.instance.collection("students").get().then((value) {
+      value.docs.forEach((element) {
+        print("ADDING ITEMS");
+        _items.add(element.data());
 
+      });
+
+      setState(() {
+
+      });
+    }).catchError((e) {
+      print("Failed to get the list");
+      print(e);
+      throw e;
+    });
+
+    for (var item in _items) {
+      if (item["id"] == widget.studentName) {
+        print("this works!");
+        profilePhoto.add(Image.network(item["profile_url"]));
+      } else {
+        print("this does not!");
+        profilePhoto.add(Image.network("https://image.shutterstock.com/image-illustration/not-working-red-rubber-stamp-260nw-576995737.jpg"));
+      }
+    }
+  }
 
 
   @override
@@ -89,7 +115,7 @@ class _faceDetectedScreen extends State<faceDetectedScreen> {
           child: Column(
             children: [
               Text(widget.studentName),
-              widget.profilePhoto,
+              profilePhoto[0],
               Text("Is this you?"),
               Center(
                 child: Row(

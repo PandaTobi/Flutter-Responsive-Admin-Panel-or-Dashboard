@@ -71,7 +71,7 @@ class _AdminHomeState extends State<AdminHomeScreen> {
                     // File file = await getImageFileFromAssets('assets/images/yutest.jpeg');
                     // Uint8List bytes = file.readAsBytesSync();
                     var image = rek.Image(bytes: bytes.buffer.asUint8List());
-                    service.indexFaces(collectionId: "andyproject", image: image, externalImageId: "user-yu")
+                    service.indexFaces(collectionId: "andyproject", image: image, externalImageId: "user-andy")
                         .then((value) {
                           print("Successfully indexed the image.");
                           print(value.faceRecords);
@@ -120,7 +120,7 @@ class _AdminHomeState extends State<AdminHomeScreen> {
                         context,
                         MaterialPageRoute(builder: (context) => faceDetectedScreen(
                             studentName: "Andy",
-                            profilePhoto: Image.memory(bytes.buffer.asUint8List()),
+                            // profilePhoto: Image.memory(bytes.buffer.asUint8List()),
                             classes: ["Math", "English"])
                         )
                     );
