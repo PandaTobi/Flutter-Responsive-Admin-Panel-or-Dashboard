@@ -68,18 +68,29 @@ class _faceDetectedScreen extends State<faceDetectedScreen> {
 
   @override
   void initState() {
-    super.initState();
+
     loadAll();
+    for (var item in _items) {
+      if (item["id"] == widget.studentName) {
+        print("this works!");
+        profilePhoto.add(item["profile_url"]);
+      } else {
+        print("this does not!");
+        profilePhoto.add("https://image.shutterstock.com/image-illustration/not-working-red-rubber-stamp-260nw-576995737.jpg");
+      }
+    }
+    super.initState();
   }
 
   List _items = [];
-  List profilePhoto = [];
+  List profilePhoto = ["https://image.shutterstock.com/image-illustration/not-working-red-rubber-stamp-260nw-576995737.jpg"];
 
   void loadAll() {
     _items = [];
     FirebaseFirestore.instance.collection("students").get().then((value) {
       value.docs.forEach((element) {
         print("ADDING ITEMS");
+        print(element.data()["id"]);
         _items.add(element.data());
 
       });
@@ -93,15 +104,8 @@ class _faceDetectedScreen extends State<faceDetectedScreen> {
       throw e;
     });
 
-    for (var item in _items) {
-      if (item["id"] == widget.studentName) {
-        print("this works!");
-        profilePhoto.add(Image.network(item["profile_url"]));
-      } else {
-        print("this does not!");
-        profilePhoto.add(Image.network("https://image.shutterstock.com/image-illustration/not-working-red-rubber-stamp-260nw-576995737.jpg"));
-      }
-    }
+
+
   }
 
 
@@ -115,7 +119,9 @@ class _faceDetectedScreen extends State<faceDetectedScreen> {
           child: Column(
             children: [
               Text(widget.studentName),
-              profilePhoto[0],
+              Image.network(
+                  profilePhoto[profilePhoto.length-1]
+              ),
               Text("Is this you?"),
               Center(
                 child: Row(
