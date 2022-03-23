@@ -9,7 +9,6 @@ import 'detected_information.dart';
 
 var credentials = rek.AwsClientCredentials(secretKey: '4tHP09vwWbnvlHtYmJzereOm3E/RkUgFpMLKfv6/', accessKey: 'AKIAZADLXOUB3433QRUY');
 
-
 // A widget that displays the picture taken by the user.
 class DisplayPictureScreen extends StatelessWidget {
   // final String imagePath;

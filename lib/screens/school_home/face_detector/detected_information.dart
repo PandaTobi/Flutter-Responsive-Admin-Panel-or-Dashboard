@@ -103,9 +103,7 @@ class _faceDetectedScreen extends State<faceDetectedScreen> {
       print(e);
       throw e;
     });
-
-
-
+    
   }
 
 
