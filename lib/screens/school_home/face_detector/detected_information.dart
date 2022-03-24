@@ -10,6 +10,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:convert';
 
 /*
+#
 REDIRECT TO THIS PAGE WHEN DETECTED A FACE
  */
 
@@ -70,15 +71,7 @@ class _faceDetectedScreen extends State<faceDetectedScreen> {
   void initState() {
 
     loadAll();
-    for (var item in _items) {
-      if (item["id"] == widget.studentName) {
-        print("this works!");
-        profilePhoto.add(item["profile_url"]);
-      } else {
-        print("this does not!");
-        profilePhoto.add("https://image.shutterstock.com/image-illustration/not-working-red-rubber-stamp-260nw-576995737.jpg");
-      }
-    }
+
     super.initState();
   }
 
@@ -87,25 +80,38 @@ class _faceDetectedScreen extends State<faceDetectedScreen> {
 
   void loadAll() {
     _items = [];
+    print("items: ");
+    print(_items);
+
     FirebaseFirestore.instance.collection("students").get().then((value) {
       value.docs.forEach((element) {
         print("ADDING ITEMS");
         print(element.data()["id"]);
         _items.add(element.data());
-
       });
 
       setState(() {
-
       });
+
+      print(widget.studentName == "999111");
+
+      for (var item in _items) {
+        print(item);
+        if (item["id"] == widget.studentName) {
+          print("this works!");
+          profilePhoto.add(item["profile_url"]);
+        } else {
+          print("this does not!");
+        }
+      }
+
+
     }).catchError((e) {
       print("Failed to get the list");
       print(e);
       throw e;
     });
-    
   }
-
 
   @override
   Widget build(BuildContext context) {

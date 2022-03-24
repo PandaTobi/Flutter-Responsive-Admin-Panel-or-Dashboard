@@ -55,7 +55,7 @@ class _AdminHomeState extends State<AdminHomeScreen> {
               ElevatedButton(
                   onPressed: () {
                     // how to create a collection
-                    service.createCollection(collectionId: "andyproject").then((value) {
+                    service.createCollection(collectionId: "andyproject2").then((value) {
                       print("Successfully created a collection!");
                       print(value);
                     }).catchError((e) {
@@ -71,7 +71,7 @@ class _AdminHomeState extends State<AdminHomeScreen> {
                     // File file = await getImageFileFromAssets('assets/images/yutest.jpeg');
                     // Uint8List bytes = file.readAsBytesSync();
                     var image = rek.Image(bytes: bytes.buffer.asUint8List());
-                    service.indexFaces(collectionId: "andyproject", image: image, externalImageId: "user-andy")
+                    service.indexFaces(collectionId: "andyproject2", image: image, externalImageId: "user-andy")
                         .then((value) {
                           print("Successfully indexed the image.");
                           print(value.faceRecords);

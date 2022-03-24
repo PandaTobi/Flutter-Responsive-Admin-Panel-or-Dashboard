@@ -111,7 +111,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
 
                             var image = rek.Image(bytes: bytes);
 
-                            service.indexFaces(collectionId: "andyproject", image: image, externalImageId: idController.text)
+                            service.indexFaces(collectionId: "andyproject2", image: image, externalImageId: idController.text)
                                 .then((value) {
                               print("Successfully indexed the image.");
                               print(value.faceRecords);

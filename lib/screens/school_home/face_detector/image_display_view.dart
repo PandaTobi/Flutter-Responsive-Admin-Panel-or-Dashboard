@@ -32,7 +32,7 @@ class DisplayPictureScreen extends StatelessWidget {
 
           var image = rek.Image(bytes: Uint8List.fromList(imageBytes));
 
-          service.searchFacesByImage(collectionId: "andyproject", image: image)
+          service.searchFacesByImage(collectionId: "andyproject2", image: image)
               .then((value) {
             print("Successfully found the image.");
             print(value.faceMatches?.first.face?.externalImageId);
@@ -40,7 +40,7 @@ class DisplayPictureScreen extends StatelessWidget {
             Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => faceDetectedScreen(
-                    studentName: "ID: " + (value.faceMatches?.first.face?.externalImageId as String),
+                    studentName: (value.faceMatches?.first.face?.externalImageId as String),
 
                     classes: ["Math", "English"])
                 )
