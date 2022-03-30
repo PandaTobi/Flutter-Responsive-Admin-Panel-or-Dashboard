@@ -1,6 +1,5 @@
 import 'package:admin/screens/school_home/admin_classes_screen.dart';
 import 'package:admin/screens/school_home/admin_students_screen.dart';
-import 'package:admin/screens/school_home/school_home_screen.dart';
 import 'package:admin/screens/school_home/admin_home_screen.dart';
 import 'package:flutter/material.dart';
 

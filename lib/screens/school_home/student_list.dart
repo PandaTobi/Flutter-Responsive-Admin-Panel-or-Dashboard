@@ -11,7 +11,6 @@ import '../../constants.dart';
 import '../dashboard/dashboard_screen.dart';
 import '../main/main_screen.dart';
 import 'add_student.dart';
-import 'student_details.dart';
 
 class ActionButton extends StatelessWidget {
   Color? color;

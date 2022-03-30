@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 
 import 'camera.dart';
 
+
 var credentials = rek.AwsClientCredentials(secretKey: '4tHP09vwWbnvlHtYmJzereOm3E/RkUgFpMLKfv6/', accessKey: 'AKIAZADLXOUB3433QRUY');
 
 class AddStudentPage extends StatefulWidget {

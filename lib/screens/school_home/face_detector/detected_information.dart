@@ -1,6 +1,7 @@
 import 'package:admin/screens/login/login_screen.dart';
 import 'package:admin/screens/school_home/add_class.dart';
 import 'package:admin/screens/school_home/edit_class_page.dart';
+import 'package:admin/screens/school_home/face_detector/face_detectorview.dart';
 import 'package:admin/screens/school_home/student_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -133,7 +134,23 @@ class _faceDetectedScreen extends State<faceDetectedScreen> {
                     ActionButton(
                         label: "Yes",
                         callback: (context) {
-                          print("CONFIRMED, THIS IS STUDENT");
+                        print("CONFIRMED, THIS IS STUDENT");
+                        showDialog<String>(
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                            title: const Text('Awesome, thanks!'),
+                            content: const Text(''),
+                            // TODO: MARK STUDENT PRESENT WHEN CLICK ON THIS BUTTON
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => FaceDetectorView())),
+                                child: const Text('Blah blah'),
+                              ),
+                            ],
+                          ),
+                        );
+
+
                         }
                     ),
                     ActionButton(
