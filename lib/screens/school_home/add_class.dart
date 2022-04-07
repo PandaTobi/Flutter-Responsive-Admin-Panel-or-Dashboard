@@ -67,6 +67,9 @@ class _AddClassPageState extends State<AddClassPage> {
                       } else {
                         // how to save the data to FireStore
                         var id = idController.text.toString();
+
+
+
                         FirebaseFirestore.instance.collection("classes").doc(id).get().then((value) {
                           if (value.exists) {
                             print("Document exist.");

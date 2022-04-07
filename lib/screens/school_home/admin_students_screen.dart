@@ -12,44 +12,10 @@ import '../dashboard/dashboard_screen.dart';
 import '../main/main_screen.dart';
 import 'add_student.dart';
 
-class ActionButton extends StatelessWidget {
-  Color? color;
-  String? label;
-  Color? labelColor;
-  String iconData;
-  Color? iconColor;
-  late void Function(BuildContext) callback;
-
-  ActionButton({
-    this.color = Colors.blueGrey,
-    this.label,
-    this.labelColor = Colors.white,
-    required this.iconData,
-    this.iconColor = Colors.white,
-    required this.callback,
-  });
-
-
-
-  @override
-  Widget build(BuildContext context) {
-    return OutlinedButton.icon(
-      onPressed: () => callback.call(context),
-      style: OutlinedButton.styleFrom(
-        backgroundColor: color,
-        padding: const EdgeInsets.all(16.0),
-      ),
-      label: Text(label!, style: TextStyle(color: labelColor)),
-      icon: Image.network(iconData),
-    );
-  }
-}
-
 class AdminStudentScreen extends StatefulWidget {
   @override
   _AdminStudentScreen createState() => new _AdminStudentScreen();
 }
-
 
 class _AdminStudentScreen extends State<AdminStudentScreen> {
   @override
@@ -65,12 +31,8 @@ class _AdminStudentScreen extends State<AdminStudentScreen> {
     FirebaseFirestore.instance.collection("students").get().then((value) {
       value.docs.forEach((element) {
         _items.add(element.data());
-
-
       });
-      setState(() {
-
-      });
+      setState(() {});
     }).catchError((e) {
       print("Failed to get the list");
       print(e);
@@ -81,34 +43,80 @@ class _AdminStudentScreen extends State<AdminStudentScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Class Management")),
-      body: Container(
-          margin: EdgeInsets.all(10),
-          padding: EdgeInsets.all(30.0),
-          child: ListView.builder(
-              padding: const EdgeInsets.all(8),
-              itemCount: _items.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Container(
-                    height: 50,
-                    width: 700,
-                    child: Center(child: ActionButton(
-                      label: _items[index]["name"],
-                      iconData: _items[index]["profile_url"],
-                      callback: (context) {
-                        Navigator.of(context)
-                            .push(MaterialPageRoute(builder: (_) => EditStudentPage(_items[index]["id"])));
-                      },)
-                    ));
-              })
+      body: SingleChildScrollView(
+        physics: ScrollPhysics(),
+        child: Column(
+          children: [
+            Container(
+              margin: EdgeInsets.fromLTRB(0, 40, 0, 0),
+              child: Text(
+                  "Students",
+                  style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.w100,
+                      fontFamily: 'RaleWay',
+                      color: Colors.white
+                  )
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.all(3),
+              padding: EdgeInsets.all(20.0),
+              child: ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  padding: const EdgeInsets.all(8),
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: _items.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Container(
+                      height: 300,
+                      width: 200,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        gradient: const LinearGradient(
+                          begin: FractionalOffset(0.0, 0.0),
+                          end: FractionalOffset(3.0, -1.0),
+                          colors: [
+                            Color(0xFF8ea4c6),
+                            Color(0xff557878),
+                          ],
+                        ),
+                      ),
+                      margin: EdgeInsets.all(8.0),
+                      child: Card(
+                        color: Colors.transparent.withOpacity(0.0),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(8.0))),
+                        child: InkWell(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (_) =>
+                                      EditStudentPage(_items[index]["id"])));
+                            },
+                            child: Column(
+                              children: <Widget>[
+                                Expanded(
+                                  child: Image.network(_items[index]["profile_url"],
+                                      fit: BoxFit.contain),
+                                ),
+                                ListTile(
+                                  title: Text(_items[index]["name"]),
+                                  subtitle: Text('Lorem ipsum'),
+                                ),
+                              ],
+                            )),
+                      ),
+                    );
+                  })),]
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => AddStudentPage())
-          ).then((value) {
+          Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => AddStudentPage()))
+              .then((value) {
             loadAll();
           });
         },
@@ -116,4 +124,3 @@ class _AdminStudentScreen extends State<AdminStudentScreen> {
     );
   }
 }
-

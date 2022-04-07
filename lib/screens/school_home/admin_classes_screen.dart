@@ -52,12 +52,6 @@ class ActionButton extends StatelessWidget {
   }
 }
 
-final List<String> names = ["Class1", "Class2", "Class3", "Class4", ];
-
-
-
-// {}
-
 class _AdminClassesState extends State<AdminClassesScreen> {
 
   @override
@@ -90,35 +84,88 @@ class _AdminClassesState extends State<AdminClassesScreen> {
       throw e;
     });
   }
-
-  void addStudent (name) {
-    // FirebaseFirestore.instance.collection('messages').push().set(name.toJson());
-
-  }
   
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Class Management")),
-      body: Container(
-          margin: EdgeInsets.all(10),
-          padding: EdgeInsets.all(30.0),
-          child: ListView.builder(
-              padding: const EdgeInsets.all(8),
-              itemCount: _items.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Container(
-                    height: 50,
-                    width: 700,
-                    child: Center(child: ActionButton(
-                      label: _items[index]["name"],
-                      iconData: Icons.class_,
-                      callback: (context) {
-                        Navigator.of(context)
-                            .push(MaterialPageRoute(builder: (_) => EditClassPage(_items[index]["id"])));
-                      },)
-                    ));
-              })
+      body:
+      SingleChildScrollView(
+        physics: ScrollPhysics(),
+        child: Column(
+          children: [
+            Container(
+               margin: EdgeInsets.fromLTRB(0, 60, 0, 10),
+              child: Text(
+                  "Class Management",
+                  style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.w100,
+                      fontFamily: 'RaleWay',
+                      color: Colors.white
+                  )
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.all(10),
+              padding: EdgeInsets.all(30.0),
+              child: ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  padding: const EdgeInsets.all(8),
+                  itemCount: _items.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Container(
+                        // height: 50,
+                        // width: 700,
+                        // child: Center(child: ActionButton(
+                        //   label: _items[index]["name"],
+                        //   iconData: Icons.class_,
+                        //   callback: (context) {
+                        //     Navigator.of(context)
+                        //         .push(MaterialPageRoute(builder: (_) => EditClassPage(_items[index]["id"])));
+                        //   },)
+                      margin: EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          gradient: const LinearGradient(
+                            begin: FractionalOffset(0.0, 0.0),
+                            end: FractionalOffset(3.0, -1.0),
+                            colors: [
+                              Color(0xFF8ea4c6),
+                              Color(0xff557878),
+                            ],
+                          ),
+                        ),
+                        child: ListTile(
+                            contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+
+                            leading: Container(
+                              padding: EdgeInsets.only(right: 12.0),
+                              decoration: new BoxDecoration(
+                                  border: new Border(
+                                      right: new BorderSide(width: 1.0, color: Colors.white24))),
+                              child: Icon(Icons.class__outlined, color: Colors.white),
+                            ),
+                            title: Text(
+                              _items[index]["name"],
+                              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                            ),
+                            // subtitle: Text("Intermediate", style: TextStyle(color: Colors.white)),
+
+                            subtitle: Row(
+                              children: <Widget>[
+                                Icon(Icons.linear_scale, color: Colors.black),
+                                Text("Time: 6:30 PM", style: TextStyle(color: Colors.white))
+                              ],
+                            ),
+                            trailing:
+                            Icon(Icons.keyboard_arrow_right, color: Colors.black, size: 30.0))
+                        );
+                  })
+          ),
+          ]
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
