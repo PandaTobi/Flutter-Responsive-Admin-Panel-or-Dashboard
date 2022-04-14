@@ -70,7 +70,7 @@ class _AdminStudentScreen extends State<AdminStudentScreen> {
                   itemCount: _items.length,
                   itemBuilder: (BuildContext context, int index) {
                     return Container(
-                      height: 300,
+                      height: 400,
                       width: 200,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
@@ -85,7 +85,7 @@ class _AdminStudentScreen extends State<AdminStudentScreen> {
                       ),
                       margin: EdgeInsets.all(8.0),
                       child: Card(
-                        color: Colors.transparent.withOpacity(0.0),
+                        color: Color(0xFF8ea4c6),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.all(Radius.circular(8.0))),
                         child: InkWell(
