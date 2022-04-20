@@ -1,6 +1,11 @@
+import 'package:admin/screens/login/register_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 
 import 'login_form.dart';
+
+FirebaseAuth auth = FirebaseAuth.instance;
 
 class LoginScreen extends StatelessWidget {
   @override
@@ -53,7 +58,7 @@ class LoginScreen extends StatelessWidget {
                           onTap: () => Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => LoginScreen())), // TODO: Change here
+                                  builder: (context) => RegisterScreen())), // TODO: Change here
                           child: Text('Sign Up',
                               style: TextStyle(
                                   fontSize: 15,

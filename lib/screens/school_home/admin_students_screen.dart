@@ -61,7 +61,7 @@ class _AdminStudentScreen extends State<AdminStudentScreen> {
             ),
             Container(
               margin: EdgeInsets.all(3),
-              padding: EdgeInsets.all(20.0),
+              padding: EdgeInsets.fromLTRB(50, 20, 50, 20),
               child: ListView.builder(
                   scrollDirection: Axis.vertical,
                   shrinkWrap: true,
@@ -71,7 +71,7 @@ class _AdminStudentScreen extends State<AdminStudentScreen> {
                   itemBuilder: (BuildContext context, int index) {
                     return Container(
                       height: 400,
-                      width: 200,
+                      width: 50,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                         gradient: const LinearGradient(
@@ -85,6 +85,7 @@ class _AdminStudentScreen extends State<AdminStudentScreen> {
                       ),
                       margin: EdgeInsets.all(8.0),
                       child: Card(
+
                         color: Color(0xFF8ea4c6),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.all(Radius.circular(8.0))),

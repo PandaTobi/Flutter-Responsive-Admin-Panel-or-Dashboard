@@ -138,6 +138,11 @@ class _AdminClassesState extends State<AdminClassesScreen> {
                           ),
                         ),
                         child: ListTile(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (_) =>
+                                      EditClassPage((_items[index]["id"]))));
+                            },
                             contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
 
                             leading: Container(

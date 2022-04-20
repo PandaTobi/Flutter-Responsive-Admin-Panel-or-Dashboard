@@ -5,23 +5,23 @@ import 'package:flutter/material.dart';
 import 'input_text_field.dart';
 
 
-class LoginForm extends StatefulWidget {
+class RegisterForm extends StatefulWidget {
   @override
   _LoginFormState createState() => _LoginFormState();
 }
 
-class _LoginFormState extends State<LoginForm> {
+class _LoginFormState extends State<RegisterForm> {
   final _formKey = GlobalKey<FormState>();
   FirebaseAuth auth = FirebaseAuth.instance;
 
 
   @override
   Widget build(BuildContext context) {
-    String email = "email@gmail.com";
-    String password = "Password";
+    String email = "";
+    String password = "";
 
-    TextEditingController emailController = new TextEditingController(text: "email@gmail.com");
-    TextEditingController passwordController = new TextEditingController(text: "Password");
+    TextEditingController emailController = new TextEditingController();
+    TextEditingController passwordController = new TextEditingController();
 
 
     const textInputDecoration = InputDecoration(
@@ -46,24 +46,24 @@ class _LoginFormState extends State<LoginForm> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 TextFormField(
-
                   decoration: textInputDecoration.copyWith(
                       hintText: 'Email',
                       prefixIcon: const Icon(Icons.email),
                       fillColor: Colors.black
                   ),
                   style: TextStyle(color: Colors.white),
-
                   controller: emailController,
                 ),
 
                 TextFormField(
                   decoration: textInputDecoration.copyWith(
-                      hintText: 'Email',
+                      hintText: 'Password',
                       prefixIcon: const Icon(Icons.lock),
-                      fillColor: Colors.black
+                      fillColor: Colors.black,
                   ),
                   style: TextStyle(color: Colors.white),
+
+
                   controller: passwordController,
                 ),
                 Container(
@@ -77,7 +77,7 @@ class _LoginFormState extends State<LoginForm> {
                         label: Padding(
                           padding: const EdgeInsets.only(left: 10, right: 20),
                           child: Text(
-                            "Log in",
+                            "Sign up",
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 20,
@@ -92,7 +92,7 @@ class _LoginFormState extends State<LoginForm> {
                           try {
 
                             print(passwordController.text);
-                            UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+                            UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
                                 email: emailController.text,
                                 password: passwordController.text
                             );
@@ -106,7 +106,11 @@ class _LoginFormState extends State<LoginForm> {
 
                             print("user successfully created");
                           } on FirebaseAuthException catch (e) {
-                            print("wrong");
+                            if (e.code == 'weak-password') {
+                              print('The password provided is too weak.');
+                            } else if (e.code == 'email-already-in-use') {
+                              print('The account already exists for that email.');
+                            }
                           } catch (e) {
                             print(e);
                           }
