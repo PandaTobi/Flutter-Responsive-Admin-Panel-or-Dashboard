@@ -6,8 +6,10 @@ import 'package:admin/screens/school_home/admin_students_screen.dart';
 import 'package:admin/screens/school_home/camera.dart';
 import 'package:aws_rekognition_api/rekognition-2016-06-27.dart' as rek;
 import 'package:camera/camera.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../login/login_screen.dart';
 import 'face_detector/face_detectorview.dart';
 
 var credentials = rek.AwsClientCredentials(
@@ -21,11 +23,23 @@ class AdminHomeScreen extends StatefulWidget {
 
 class _AdminHomeState extends State<AdminHomeScreen> {
   var service = rek.Rekognition(region: 'us-west-1', credentials: credentials);
+  FirebaseAuth auth = FirebaseAuth.instance;
+
 
   @override
   void initState() {
     super.initState();
   }
+  ///sign out
+  Future signOut() async{
+    try{
+      return await auth.signOut();
+    }catch(e){
+      print(e.toString());
+      return null;
+    }
+  }
+
 
   Card makeDashboardItem(String title, Icon icon, int index) {
     return Card(
@@ -91,7 +105,11 @@ class _AdminHomeState extends State<AdminHomeScreen> {
                       builder: (context) => new AdminClassesScreen()));
             }
             if (index == 3) {
-              //4.item
+              signOut();
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => LoginScreen()),
+              );
             }
             if (index == 4) {
               //5.item
@@ -171,172 +189,38 @@ class _AdminHomeState extends State<AdminHomeScreen> {
                   makeDashboardItem("Face Detector", Icon(Icons.camera), 0),
                   makeDashboardItem("Students", Icon(Icons.person), 1),
                   makeDashboardItem("Classes", Icon(Icons.class__rounded), 2),
-                  makeDashboardItem("Information", Icon(Icons.chat_rounded), 3),
+                  makeDashboardItem("Sign Out", Icon(Icons.chat_rounded), 3),
                 ],
               ),
             ),
-            // Container(
-            //   margin: EdgeInsets.only(bottom: 20),
-            //   child: Column(
-            //     children: [
-            //       FittedBox(
-            //         fit: BoxFit.fitWidth,
-            //         child: Text(
-            //             "Organization Profile: ",
-            //           style: TextStyle(
-            //               fontSize: 55,
-            //               fontWeight: FontWeight.bold,
-            //             color: Colors.white
-            //           )
-            //         ),
-            //       ),
-            //       FittedBox(
-            //         fit: BoxFit.fitWidth,
-            //         child: Text(
-            //             "School name: Lorem ipsum",
-            //             style: TextStyle(
-            //                 color: Colors.white
-            //             )
-            //         ),
-            //       ),
-            //       FittedBox(
-            //         fit: BoxFit.fitWidth,
-            //         child: Text(
-            //             "Information: blah blah",
-            //             style: TextStyle(
-            //                 color: Colors.white
-            //             )
-            //         ),
-            //       ),
-            //       FittedBox(
-            //         fit: BoxFit.fitWidth,
-            //         child: Text(
-            //             "Contact info: 1-800-800-8000",
-            //             style: TextStyle(
-            //                 fontSize: 10,
-            //                 color: Colors.white
-            //             )
-            //         ),
-            //       ),
-            //     ]
-            //   ),
-            //   decoration: BoxDecoration(
-            //     color: const Color(0xff7c94b6),
-            //     border: Border.all(
-            //       color: Colors.black,
-            //       width: 4,
-            //     ),
-            //     borderRadius: BorderRadius.circular(12),
-            //   ),
-            // ),
-            //
-            // ElevatedButton(
-            //     onPressed: () {
-            //       // how to create a collection
-            //       service.createCollection(collectionId: "andyproject2").then((value) {
-            //         print("Successfully created a collection!");
-            //         print(value);
-            //       }).catchError((e) {
-            //         print("Failed to create a collection!");
-            //       });
-            //     },
-            //     child: Text("Create a Collection")
-            // ),
-            // ElevatedButton(
-            //     onPressed: () async {
-            //       // how to create a collection
-            //       ByteData bytes = await rootBundle.load('assets/images/andytest.jpg');
-            //       // File file = await getImageFileFromAssets('assets/images/yutest.jpeg');
-            //       // Uint8List bytes = file.readAsBytesSync();
-            //       var image = rek.Image(bytes: bytes.buffer.asUint8List());
-            //       service.indexFaces(collectionId: "andyproject2", image: image, externalImageId: "user-andy")
-            //           .then((value) {
-            //             print("Successfully indexed the image.");
-            //             print(value.faceRecords);
-            //           }).catchError((e) {
-            //             print("Failed to index the image.");
-            //             print(e);
-            //           });
-            //     },
-            //     child: Text("Index Face")
-            // ),
-            // ElevatedButton(
-            //     onPressed: () async {
-            //       // Obtain a list of the available cameras on the device.
-            //       final cameras = await availableCameras();
-            //
-            //       // Get a specific camera from the list of available cameras.
-            //       final firstCamera = cameras.first;
-            //
-            //       var path = await Navigator.push(
-            //           context,
-            //           MaterialPageRoute(builder: (context) => TakePictureScreen(camera: firstCamera, useLocalPath: true,))
-            //       );
-            //
-            //       print(path);
-            //
-            //       // how to create a collection
-            //       // ByteData bytes = await rootBundle.load('assets/images/yutest.jpeg');
-            //       File file = File(path);
-            //       Uint8List bytes = file.readAsBytesSync();
-            //       var image = rek.Image(bytes: bytes);
-            //       service.searchFacesByImage(collectionId: "andyproject", image: image)
-            //           .then((value) {
-            //         print("Successfully found the image.");
-            //         print(value.faceMatches);
-            //       }).catchError((e) {
-            //         print("Failed to find the image.");
-            //         print(e);
-            //       });
-            //     },
-            //     child: Text("Search Face")
-            // ),
-            // ElevatedButton(
-            //     onPressed: () async {
-            //       ByteData bytes = await rootBundle.load('assets/images/andytest.jpg');
-            //       Navigator.push(
-            //           context,
-            //           MaterialPageRoute(builder: (context) => faceDetectedScreen(
-            //               studentName: "Andy",
-            //               // profilePhoto: Image.memory(bytes.buffer.asUint8List()),
-            //               classes: ["Math", "English"])
-            //           )
-            //       );
-            //     },
-            //     child: Text(
-            //         "ON FACE DETECTED SCREEN"
-            //     )
-            // ),
-            // CustomCard(
-            //   'Face Detector',
-            //   FaceDetectorView(),
-            //   featureCompleted: true,
-            // ),
-            Text("Next class: AP Math",
-                style: TextStyle(fontSize: 20, color: Colors.white))
+            Padding(
+              padding: EdgeInsets.fromLTRB(0, 0, 0, 140),
+              child: Text("Next class: AP Math",
+                  style: TextStyle(fontSize: 20, color: Colors.white)),
+            )
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.camera_alt),
-        onPressed: () async {
-          WidgetsFlutterBinding.ensureInitialized();
-
-          // Obtain a list of the available cameras on the device.
-          final cameras = await availableCameras();
-
-          // Get a specific camera from the list of available cameras.
-          final firstCamera = cameras.first;
-
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => TakePictureScreen(
-                        camera: firstCamera,
-                        useLocalPath: false,
-                      )));
-        },
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   child: Icon(Icons.camera_alt),
+      //   onPressed: () async {
+      //     WidgetsFlutterBinding.ensureInitialized();
+      //
+      //     // Obtain a list of the available cameras on the device.
+      //     final cameras = await availableCameras();
+      //
+      //     // Get a specific camera from the list of available cameras.
+      //     final firstCamera = cameras.first;
+      //
+      //     Navigator.push(
+      //         context,
+      //         MaterialPageRoute(
+      //             builder: (context) => TakePictureScreen(
+      //                   camera: firstCamera,
+      //                   useLocalPath: false,
+      //                 )));
+      //   },
+      // ),
     );
   }
 }

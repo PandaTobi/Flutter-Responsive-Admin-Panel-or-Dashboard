@@ -2,8 +2,6 @@ import 'package:admin/screens/home/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import 'input_text_field.dart';
-
 
 class RegisterForm extends StatefulWidget {
   @override
@@ -13,6 +11,8 @@ class RegisterForm extends StatefulWidget {
 class _LoginFormState extends State<RegisterForm> {
   final _formKey = GlobalKey<FormState>();
   FirebaseAuth auth = FirebaseAuth.instance;
+
+
 
 
   @override

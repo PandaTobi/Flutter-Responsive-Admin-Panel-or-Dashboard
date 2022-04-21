@@ -145,6 +145,9 @@ class _EditClassPageState extends State<EditClassPage> {
                 width: double.infinity,
                 height: 50,
                 child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: Color(0xFF8ea4c6),
+                    ),
                     onPressed: () {
                       // update the class in Firebase Firestore
                       var classRecord = {
@@ -165,7 +168,10 @@ class _EditClassPageState extends State<EditClassPage> {
                         print(e);
                       });
                     },
-                    child: Text("Update")),
+                    child: Text(
+                        "Update",
+                        style: TextStyle(color: Colors.black87)
+                    )),
               ),
               SizedBox(
                 height: 10,
@@ -174,6 +180,9 @@ class _EditClassPageState extends State<EditClassPage> {
                 width: double.infinity,
                 height: 50,
                 child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: Color(0xFF8ea4c6),
+                    ),
                     onPressed: () {
                       // search in Firestore
                       // TODO 1: Add a new search screen to show all students by default
@@ -197,7 +206,7 @@ class _EditClassPageState extends State<EditClassPage> {
                               builder: (context) =>
                                   StudentList(class_id: widget.studentId)));
                     },
-                    child: Text("Add Student")),
+                    child: Text("Add Student", style: TextStyle(color: Colors.black87))),
               ),
               Flexible(
                 child: SingleChildScrollView(
@@ -271,7 +280,12 @@ class _EditClassPageState extends State<EditClassPage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.home),
+        backgroundColor: Color(0xFF8ea4c6),
+        child: IconTheme(
+            data: new IconThemeData(
+                color: Colors.black87),
+            child: Icon(Icons.home)
+        ),
         onPressed: () {
           Navigator.pop(context);
         },

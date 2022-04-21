@@ -117,7 +117,12 @@ class _EditStudentPageState extends State<EditStudentPage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.home),
+        backgroundColor: Color(0xFF8ea4c6),
+        child: IconTheme(
+            data: new IconThemeData(
+                color: Colors.black87),
+            child: Icon(Icons.home)
+        ),
         onPressed: () {
           Navigator.pop(context);
         },

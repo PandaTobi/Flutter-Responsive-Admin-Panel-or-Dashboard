@@ -173,7 +173,12 @@ class _AdminClassesState extends State<AdminClassesScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
+        backgroundColor: Color(0xFF8ea4c6),
+        child: IconTheme(
+            data: new IconThemeData(
+                color: Colors.black87),
+            child: Icon(Icons.add)
+        ),
         onPressed: () {
           Navigator.push(
               context,

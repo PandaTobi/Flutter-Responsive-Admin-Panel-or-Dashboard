@@ -59,6 +59,16 @@ class _AddStudentPageState extends State<AddStudentPage> {
                 height: 10,
               ),
               ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: Color(0xFF8ea4c6),
+
+                  ),
+                  // backgroundColor: Color(0xFF8ea4c6),
+                  // child: IconTheme(
+                  //     data: new IconThemeData(
+                  //         color: Colors.black87),
+                  //     child: Icon(Icons.home)
+                  // ),
                   onPressed:  () async {
                     WidgetsFlutterBinding.ensureInitialized();
 
@@ -151,7 +161,12 @@ class _AddStudentPageState extends State<AddStudentPage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.home),
+        backgroundColor: Color(0xFF8ea4c6),
+        child: IconTheme(
+            data: new IconThemeData(
+                color: Colors.black87),
+            child: Icon(Icons.home)
+        ),
         onPressed: () {
           Navigator.pop(context);
         },

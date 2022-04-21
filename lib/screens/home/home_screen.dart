@@ -48,23 +48,35 @@ class _HomeScreenState extends State<HomeScreen> {
                 topLeft: Radius.circular(30.0),
                 topRight: Radius.circular(30.0),
               ),
-              child: BottomNavigationBar(
-                items: const <BottomNavigationBarItem>[
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.home),
-                    label: 'Home',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.class_),
-                    label: 'Classes',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.school),
-                    label: 'Students',
-                  ),
-                ],
-                currentIndex: _selectedIndex,
-                onTap: _onItemTapped,
+              child: Theme(
+                data: Theme.of(context).copyWith(
+                  // sets the background color of the `BottomNavigationBar`
+                    canvasColor: Color(0xFF8ea4c6),
+                    // sets the active color of the `BottomNavigationBar` if `Brightness` is light
+                    primaryColor: Colors.black45,
+                    textTheme: Theme
+                        .of(context)
+                        .textTheme
+                        .copyWith(caption: new TextStyle(color: Colors.yellow))),
+                child: BottomNavigationBar(
+                  fixedColor: Colors.black45,
+                  items: const <BottomNavigationBarItem>[
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.home),
+                      label: 'Home',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.class_),
+                      label: 'Classes',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.school),
+                      label: 'Students',
+                    ),
+                  ],
+                  currentIndex: _selectedIndex,
+                  onTap: _onItemTapped,
+                ),
               ),
             )));
   }
