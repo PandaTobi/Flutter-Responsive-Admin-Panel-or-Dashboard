@@ -75,6 +75,8 @@ class _AdminStudentScreen extends State<AdminStudentScreen> {
                       color: Colors.white,
                       fontSize: 14.0,
                     ),
+
+                    // TODO: UPDATE UI OF FACERECOGNITION SCREEN UPON RECOGNIZED FACE
                     cursorColor: Color(0xFF8ea4c6),
                     onChanged: (value) {
                       setState(() {});
