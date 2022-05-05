@@ -48,7 +48,8 @@ dependencies:
   data_table_2: ^2.0.3
   intl: 0.17.0
   native_screenshot: ^1.0.0
-  google_ml_kit:
+  google_ml_kit: ^0.7.3
+
 
   aws_rekognition_api: ^1.2.0
 
