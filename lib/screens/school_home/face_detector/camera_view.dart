@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:admin/screens/school_home/face_detector/display_names.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -17,13 +18,16 @@ class CameraView extends StatefulWidget {
         required this.title,
         required this.customPaint,
         required this.onImage,
-        this.initialDirection = CameraLensDirection.back})
+        this.initialDirection = CameraLensDirection.back,
+        required this.CLASS_IDS,
+      })
       : super(key: key);
 
   final String title;
   final CustomPaint? customPaint;
   final Function(InputImage inputImage, CameraImage? image) onImage;
   final CameraLensDirection initialDirection;
+  final List CLASS_IDS;
 
   @override
   _CameraViewState createState() => _CameraViewState();
@@ -78,8 +82,19 @@ class _CameraViewState extends State<CameraView> {
         ],
       ),
       body: _body(),
-      floatingActionButton: _floatingActionButton(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: FloatingActionButton(
+          // TODO: IMPLEMENT END BUTTON THAT REDIRECTS TO A DISPLAY SCREEN
+          // TODO: WITH ALL THE KIDS THAT WEREN'T REMOVED FROM LIST, OKAY?
+          onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => DisplayNameView(
+                        CLASS_IDS: widget.CLASS_IDS,)));
+          },
+          child: Icon(Icons.camera_alt)
+
+      ),
     );
   }
 

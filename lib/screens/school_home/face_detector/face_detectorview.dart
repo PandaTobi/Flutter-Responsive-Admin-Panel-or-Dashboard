@@ -1,4 +1,5 @@
 import 'package:camera/camera.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
@@ -13,11 +14,17 @@ import 'package:image/image.dart' as imglib;
 import 'image_display_view.dart' as idv;
 
 class FaceDetectorView extends StatefulWidget {
+  // TODO: UPON INIT, CREATE/LOAD A LIST OF STUDENTS FOR DESIGNATED CLASS
+  const FaceDetectorView({Key? key, required this.CLASS_IDS}) : super(key: key);
+
+  final List CLASS_IDS;
+
   @override
   _FaceDetectorViewState createState() => _FaceDetectorViewState();
 }
 
 class _FaceDetectorViewState extends State<FaceDetectorView> {
+
   FaceDetector faceDetector =
       GoogleMlKit.vision.faceDetector(FaceDetectorOptions(
     enableContours: false,
@@ -32,6 +39,9 @@ class _FaceDetectorViewState extends State<FaceDetectorView> {
     super.dispose();
   }
 
+
+
+
   @override
   Widget build(BuildContext context) {
     return CameraView(
@@ -41,6 +51,7 @@ class _FaceDetectorViewState extends State<FaceDetectorView> {
         processImage(inputImage, image);
       },
       initialDirection: CameraLensDirection.front,
+      CLASS_IDS: widget.CLASS_IDS,
     );
   }
 
@@ -90,6 +101,7 @@ class _FaceDetectorViewState extends State<FaceDetectorView> {
             // Pass the automatically generated path to
             // the DisplayPictureScreen widget.
             imageBytes: imageBytes!, //. imageFile.path,
+            ids: widget.CLASS_IDS,
           ),
         ),
       );

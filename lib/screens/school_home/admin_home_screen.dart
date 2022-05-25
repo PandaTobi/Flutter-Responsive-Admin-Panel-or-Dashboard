@@ -25,21 +25,20 @@ class _AdminHomeState extends State<AdminHomeScreen> {
   var service = rek.Rekognition(region: 'us-west-1', credentials: credentials);
   FirebaseAuth auth = FirebaseAuth.instance;
 
-
   @override
   void initState() {
     super.initState();
   }
+
   ///sign out
-  Future signOut() async{
-    try{
+  Future signOut() async {
+    try {
       return await auth.signOut();
-    }catch(e){
+    } catch (e) {
       print(e.toString());
       return null;
     }
   }
-
 
   Card makeDashboardItem(String title, Icon icon, int index) {
     return Card(
@@ -85,11 +84,15 @@ class _AdminHomeState extends State<AdminHomeScreen> {
               ),
         child: InkWell(
           onTap: () {
+            /* TODO: REDIRECT TO PAGE OF CLASSES WHICH, WHEN ONE IS CLICKED ON, WILL SUPPLY
+                INFORMATION OF IDS OF STUDENTS IN THAT CLASS TO THE FACEDETECTORVIEW
+             */
             if (index == 0) {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => new FaceDetectorView()));
+                      builder: (context) => new FaceDetectorView(
+                          CLASS_IDS: ['999111', '321132'])));
             }
             if (index == 1) {
               //2.item

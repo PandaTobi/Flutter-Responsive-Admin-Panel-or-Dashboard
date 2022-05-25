@@ -16,22 +16,17 @@ REDIRECT TO THIS PAGE WHEN DETECTED A FACE
  */
 
 class faceDetectedScreen extends StatefulWidget {
-  const faceDetectedScreen({
-    Key? key,
-    required this.studentName,
-    // required this.profilePhoto,
-    required this.classes,
-  }) : super(key: key);
+  const faceDetectedScreen(
+      {Key? key, required this.studentName, required this.ids})
+      : super(key: key);
 
-  final String studentName;
-  // final Image profilePhoto;
-  final classes; // String array of class names
+  final String
+      studentName; // TODO: MARKS ATTENDANCE BASED ON NAME RN, NEED TO CHANGE TO ID-BASED ATTENDANCE
+  final List ids;
 
   @override
   _faceDetectedScreen createState() => new _faceDetectedScreen();
 }
-
-
 
 class ActionButton extends StatelessWidget {
   Color? color;
@@ -50,8 +45,6 @@ class ActionButton extends StatelessWidget {
     required this.callback,
   });
 
-
-
   @override
   Widget build(BuildContext context) {
     return OutlinedButton.icon(
@@ -67,22 +60,20 @@ class ActionButton extends StatelessWidget {
 }
 
 class _faceDetectedScreen extends State<faceDetectedScreen> {
-
   @override
   void initState() {
-
     loadAll();
 
     super.initState();
   }
 
   List _items = [];
-  List profilePhoto = ["https://image.shutterstock.com/image-illustration/not-working-red-rubber-stamp-260nw-576995737.jpg"];
+  List profilePhoto = [
+    "https://image.shutterstock.com/image-illustration/not-working-red-rubber-stamp-260nw-576995737.jpg"
+  ];
 
   void loadAll() {
     _items = [];
-    print("items: ");
-    print(_items);
 
     FirebaseFirestore.instance.collection("students").get().then((value) {
       value.docs.forEach((element) {
@@ -91,13 +82,9 @@ class _faceDetectedScreen extends State<faceDetectedScreen> {
         _items.add(element.data());
       });
 
-      setState(() {
-      });
-
-      print(widget.studentName == "999111");
+      setState(() {});
 
       for (var item in _items) {
-        print(item);
         if (item["id"] == widget.studentName) {
           print("this works!");
           profilePhoto.add(item["profile_url"]);
@@ -105,8 +92,6 @@ class _faceDetectedScreen extends State<faceDetectedScreen> {
           print("this does not!");
         }
       }
-
-
     }).catchError((e) {
       print("Failed to get the list");
       print(e);
@@ -124,9 +109,7 @@ class _faceDetectedScreen extends State<faceDetectedScreen> {
           child: Column(
             children: [
               Text(widget.studentName),
-              Image.network(
-                  profilePhoto[profilePhoto.length-1]
-              ),
+              Image.network(profilePhoto[profilePhoto.length - 1]),
               Text("Is this you?"),
               Center(
                 child: Row(
@@ -134,47 +117,56 @@ class _faceDetectedScreen extends State<faceDetectedScreen> {
                     ActionButton(
                         label: "Yes",
                         callback: (context) {
-                        print("CONFIRMED, THIS IS STUDENT");
-                        showDialog<String>(
-                          context: context,
-                          builder: (BuildContext context) => AlertDialog(
-                            title: const Text('Awesome, thanks!'),
-                            content: const Text(''),
-                            // TODO: MARK STUDENT PRESENT WHEN CLICK ON THIS BUTTON
-                            actions: <Widget>[
-                              TextButton(
-                                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => FaceDetectorView())),
-                                child: const Text('Blah blah'),
-                              ),
-                            ],
-                          ),
-                        );
+                          print("CONFIRMED, THIS IS STUDENT");
+                          showDialog<String>(
+                            context: context,
+                            builder: (BuildContext context) => AlertDialog(
+                              title: const Text('Awesome, thanks!'),
+                              content: const Text(''),
+                              // TODO: MARK STUDENT PRESENT WHEN CLICK ON THIS BUTTON
 
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () {
 
-                        }
-                    ),
+                                    widget.ids.remove(widget.studentName);
+
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                FaceDetectorView(
+                                                    CLASS_IDS: widget.ids)));
+                                  },
+                                  child: const Text('Blah blah'),
+                                ),
+                              ],
+                            ),
+                          );
+                        }),
                     ActionButton(
                         label: "No",
                         callback: (context) {
                           print("THIS IS not STUDENT");
-                        }
-                    )
+                        })
                   ],
                 ),
               )
             ],
-          )
-      ),
+          )),
     );
   }
 }
-
 
 class ScreenLayout extends StatelessWidget {
   final String pageTitle;
   final Widget child;
 
-  const ScreenLayout({Key key = const Key("any_key"), required this.pageTitle, required this.child}) : super(key: key);
+  const ScreenLayout(
+      {Key key = const Key("any_key"),
+      required this.pageTitle,
+      required this.child})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -183,9 +175,7 @@ class ScreenLayout extends StatelessWidget {
       body: child,
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        onPressed: () {
-
-        },
+        onPressed: () {},
       ),
     );
   }
@@ -197,7 +187,8 @@ class StudentScreen extends StatelessWidget {
     return ScreenLayout(
       pageTitle: 'Class Page',
       child: Center(
-        child: Text('Put listview of students in here', style: TextStyle(color: Colors.green)),
+        child: Text('Put listview of students in here',
+            style: TextStyle(color: Colors.green)),
       ),
     );
   }
