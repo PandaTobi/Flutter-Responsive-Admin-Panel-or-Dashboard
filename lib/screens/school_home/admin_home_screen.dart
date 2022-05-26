@@ -10,6 +10,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../login/login_screen.dart';
+import 'face_detector/class_list_screen.dart';
 import 'face_detector/face_detectorview.dart';
 
 var credentials = rek.AwsClientCredentials(
@@ -91,8 +92,7 @@ class _AdminHomeState extends State<AdminHomeScreen> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => new FaceDetectorView(
-                          CLASS_IDS: ['999111', '321132'])));
+                      builder: (context) => new ClassListScreen()));
             }
             if (index == 1) {
               //2.item

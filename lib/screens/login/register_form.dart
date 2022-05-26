@@ -45,14 +45,17 @@ class _LoginFormState extends State<RegisterForm> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                TextFormField(
-                  decoration: textInputDecoration.copyWith(
-                      hintText: 'Email',
-                      prefixIcon: const Icon(Icons.email),
-                      fillColor: Colors.black
+                Padding(
+                  padding: EdgeInsets.fromLTRB(0, 0, 0, 12),
+                  child: TextFormField(
+                    decoration: textInputDecoration.copyWith(
+                        hintText: 'Email',
+                        prefixIcon: const Icon(Icons.email),
+                        fillColor: Colors.black
+                    ),
+                    style: TextStyle(color: Colors.white),
+                    controller: emailController,
                   ),
-                  style: TextStyle(color: Colors.white),
-                  controller: emailController,
                 ),
 
                 TextFormField(

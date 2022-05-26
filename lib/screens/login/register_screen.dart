@@ -31,6 +31,18 @@ class RegisterScreen extends StatelessWidget {
                   RegisterForm(),
                 ],
               ),
-            )));
+            )),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.home),
+        onPressed: () {
+
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => LoginScreen()));
+
+          // TODO: CONFIRMATION SCREEN
+        },
+      ),);
   }
 }

@@ -1,3 +1,4 @@
+import 'package:admin/screens/school_home/admin_home_screen.dart';
 import 'package:camera/camera.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -27,15 +28,26 @@ class _DisplayNameViewState extends State<DisplayNameView> {
 
   @override
   Widget build(BuildContext context) {
-    String s = widget.CLASS_IDS.join(" ");
+    String s = widget.CLASS_IDS.join(", ");
     return Scaffold(
       body: Center(
           child: Text(
-            'You have pressed the button $s times.',
+            'List of students who are absent: $s',
             style: TextStyle(color: Colors.white),
           )
       ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.home),
+        onPressed: () {
 
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => AdminHomeScreen()));
+
+          // TODO: CONFIRMATION SCREEN
+        },
+      ),
     );
   }
 

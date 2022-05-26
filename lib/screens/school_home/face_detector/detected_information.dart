@@ -108,7 +108,7 @@ class _faceDetectedScreen extends State<faceDetectedScreen> {
           padding: EdgeInsets.all(30.0),
           child: Column(
             children: [
-              Text(widget.studentName),
+              Text(widget.studentName, style: TextStyle(color: Colors.white),),
               Image.network(profilePhoto[profilePhoto.length - 1]),
               Text("Is this you?"),
               Center(
@@ -123,8 +123,6 @@ class _faceDetectedScreen extends State<faceDetectedScreen> {
                             builder: (BuildContext context) => AlertDialog(
                               title: const Text('Awesome, thanks!'),
                               content: const Text(''),
-                              // TODO: MARK STUDENT PRESENT WHEN CLICK ON THIS BUTTON
-
                               actions: <Widget>[
                                 TextButton(
                                   onPressed: () {
@@ -138,7 +136,7 @@ class _faceDetectedScreen extends State<faceDetectedScreen> {
                                                 FaceDetectorView(
                                                     CLASS_IDS: widget.ids)));
                                   },
-                                  child: const Text('Blah blah'),
+                                  child: const Text('Return to Face Detection'),
                                 ),
                               ],
                             ),

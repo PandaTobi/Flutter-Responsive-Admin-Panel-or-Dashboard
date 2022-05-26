@@ -7,52 +7,19 @@ import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import 'dart:convert';
-import '../../constants.dart';
-import '../dashboard/dashboard_screen.dart';
-import '../main/main_screen.dart';
+import 'face_detectorview.dart';
 
-class AdminClassesScreen extends StatefulWidget {
+
+class ClassListScreen extends StatefulWidget {
   @override
   _AdminClassesState createState() => new _AdminClassesState();
 }
 
 
 
-class ActionButton extends StatelessWidget {
-  Color? color;
-  String? label;
-  Color? labelColor;
-  IconData? iconData;
-  Color? iconColor;
-  late void Function(BuildContext) callback;
-
-  ActionButton({
-    this.color = Colors.blueGrey,
-    this.label,
-    this.labelColor = Colors.white,
-    this.iconData = Icons.ac_unit,
-    this.iconColor = Colors.white,
-    required this.callback,
-  });
 
 
-
-  @override
-  Widget build(BuildContext context) {
-    return OutlinedButton.icon(
-      onPressed: () => callback.call(context),
-      style: OutlinedButton.styleFrom(
-        backgroundColor: color,
-        padding: const EdgeInsets.all(16.0),
-      ),
-      label: Text(label!, style: TextStyle(color: labelColor)),
-      icon: Icon(iconData, color: iconColor),
-    );
-  }
-}
-
-class _AdminClassesState extends State<AdminClassesScreen> {
+class _AdminClassesState extends State<ClassListScreen> {
 
   @override
   void initState() {
@@ -96,9 +63,9 @@ class _AdminClassesState extends State<AdminClassesScreen> {
               Container(
                 margin: EdgeInsets.fromLTRB(0, 60, 0, 10),
                 child: Text(
-                    "Class Management",
+                    "Select a Class to Begin Face Detection",
                     style: TextStyle(
-                        fontSize: 30,
+                        fontSize: 20,
                         fontWeight: FontWeight.w100,
                         fontFamily: 'RaleWay',
                         color: Colors.white
@@ -116,15 +83,6 @@ class _AdminClassesState extends State<AdminClassesScreen> {
                       itemCount: _items.length,
                       itemBuilder: (BuildContext context, int index) {
                         return Container(
-                          // height: 50,
-                          // width: 700,
-                          // child: Center(child: ActionButton(
-                          //   label: _items[index]["name"],
-                          //   iconData: Icons.class_,
-                          //   callback: (context) {
-                          //     Navigator.of(context)
-                          //         .push(MaterialPageRoute(builder: (_) => EditClassPage(_items[index]["id"])));
-                          //   },)
                             margin: EdgeInsets.all(5),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
@@ -139,9 +97,11 @@ class _AdminClassesState extends State<AdminClassesScreen> {
                             ),
                             child: ListTile(
                                 onTap: () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (_) =>
-                                          EditClassPage((_items[index]["id"]))));
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => new FaceDetectorView(
+                                              CLASS_IDS: _items[index]["student_list"])));
                                 },
                                 contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
 

@@ -33,7 +33,7 @@ class _SplashState extends State<SplashScreen> {
             // mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Expanded(
-                  child: Image(image: AssetImage("assets/images/logo.png"))
+                  child: Image(image: AssetImage("assets/icon/icon.png"))
               ),
               Container(
                 margin: EdgeInsets.only(bottom: 20),
