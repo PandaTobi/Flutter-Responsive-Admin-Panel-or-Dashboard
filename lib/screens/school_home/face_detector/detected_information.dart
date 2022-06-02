@@ -29,7 +29,7 @@ class faceDetectedScreen extends StatefulWidget {
 }
 
 class ActionButton extends StatelessWidget {
-  Color? color;
+  Color color;
   String? label;
   Color? labelColor;
   IconData? iconData;
@@ -37,11 +37,11 @@ class ActionButton extends StatelessWidget {
   late void Function(BuildContext) callback;
 
   ActionButton({
-    this.color = Colors.blueGrey,
+    this.color = const Color(0xFF8ea4c6),
     this.label,
-    this.labelColor = Colors.white,
-    this.iconData = Icons.ac_unit,
-    this.iconColor = Colors.white,
+    this.labelColor = Colors.black87,
+    this.iconData,
+    this.iconColor = Colors.black87,
     required this.callback,
   });
 
@@ -103,30 +103,62 @@ class _faceDetectedScreen extends State<faceDetectedScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Class Management")),
-      body: Container(
-          margin: EdgeInsets.all(10),
-          padding: EdgeInsets.all(30.0),
-          child: Column(
+      body: Center(
+          child: Container(
+        height: 500,
+        width: 300,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          gradient: const LinearGradient(
+            begin: FractionalOffset(0.0, 0.0),
+            end: FractionalOffset(3.0, -1.0),
+            colors: [
+              Color(0xFF8ea4c6),
+              Color(0xff557878),
+            ],
+          ),
+        ),
+        margin: EdgeInsets.all(8.0),
+        child: Card(
+          color: Color(0xFF8ea4c6),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(8.0))),
+          child: InkWell(
+              child: Column(
             children: [
-              Text(widget.studentName, style: TextStyle(color: Colors.white),),
+              Text(
+                "ID: " + widget.studentName,
+                style: TextStyle(
+                    color: Colors.black87,
+                    fontSize: 30,
+                    fontFamily: 'RaleWay',
+                    fontWeight: FontWeight.bold),
+              ),
               Image.network(profilePhoto[profilePhoto.length - 1]),
-              Text("Is this you?"),
-              Center(
-                child: Row(
-                  children: [
-                    ActionButton(
+              Text(
+                "Is this you?",
+                style: TextStyle(color: Colors.black87, fontSize: 20),
+              ),
+              Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(0, 0, 25, 0),
+                    child: ActionButton(
+                        iconData: Icons.check,
                         label: "Yes",
                         callback: (context) {
                           print("CONFIRMED, THIS IS STUDENT");
                           showDialog<String>(
                             context: context,
                             builder: (BuildContext context) => AlertDialog(
-                              title: const Text('Awesome, thanks!'),
+                              title: const Text(
+                                'Awesome, thanks!',
+                                style: TextStyle(color: Colors.white),
+                              ),
                               content: const Text(''),
                               actions: <Widget>[
                                 TextButton(
                                   onPressed: () {
-
                                     widget.ids.remove(widget.studentName);
 
                                     Navigator.push(
@@ -136,22 +168,56 @@ class _faceDetectedScreen extends State<faceDetectedScreen> {
                                                 FaceDetectorView(
                                                     CLASS_IDS: widget.ids)));
                                   },
-                                  child: const Text('Return to Face Detection'),
+                                  child: const Text(
+                                    'Return to Face Detection',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
                                 ),
                               ],
                             ),
                           );
                         }),
-                    ActionButton(
-                        label: "No",
-                        callback: (context) {
-                          print("THIS IS not STUDENT");
-                        })
-                  ],
-                ),
-              )
+                  ),
+                  ActionButton(
+                      iconData: Icons.close,
+                      label: "No",
+                      callback: (context) {
+                        print("THIS IS not STUDENT");
+                        showDialog<String>(
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                            title: const Text(
+                              'Sorry, who are you?',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            content: const Text(''),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () {
+                                  widget.ids.remove(widget.studentName);
+
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              FaceDetectorView(
+                                                  CLASS_IDS: widget.ids)));
+                                },
+                                child: const Text(
+                                  'Return to Face Detection',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      })
+                ],
+              ),
             ],
           )),
+        ),
+      )),
     );
   }
 }

@@ -30,11 +30,73 @@ class _DisplayNameViewState extends State<DisplayNameView> {
   Widget build(BuildContext context) {
     String s = widget.CLASS_IDS.join(", ");
     return Scaffold(
-      body: Center(
-          child: Text(
-            'List of students who are absent: $s',
-            style: TextStyle(color: Colors.white),
-          )
+      body: SingleChildScrollView(
+        physics: ScrollPhysics(),
+        child: Column(
+            children: [
+              Container(
+                margin: EdgeInsets.fromLTRB(0, 60, 0, 10),
+                child: Center(
+                  child: Text(
+                      "List of students who are absent:",
+                      style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.w100,
+                          fontFamily: 'RaleWay',
+                          color: Colors.white
+                      )
+                  ),
+                ),
+              ),
+              Container(
+                  margin: EdgeInsets.all(10),
+                  padding: EdgeInsets.all(30.0),
+                  child: ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      padding: const EdgeInsets.all(8),
+                      itemCount: widget.CLASS_IDS.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Container(
+
+                            margin: EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              gradient: const LinearGradient(
+                                begin: FractionalOffset(0.0, 0.0),
+                                end: FractionalOffset(3.0, -1.0),
+                                colors: [
+                                  Color(0xFF8ea4c6),
+                                  Color(0xff557878),
+                                ],
+                              ),
+                            ),
+                            child: ListTile(
+
+                                contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+
+                                leading: Container(
+                                  padding: EdgeInsets.only(right: 12.0),
+                                  decoration: new BoxDecoration(
+                                      border: new Border(
+                                          right: new BorderSide(width: 1.0, color: Colors.white24))),
+                                  child: Icon(Icons.class__outlined, color: Colors.white),
+                                ),
+                                title: Text(
+                                  widget.CLASS_IDS[index],
+                                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                                ),
+                                // subtitle: Text("Intermediate", style: TextStyle(color: Colors.white)),
+
+
+                                trailing:
+                                Icon(Icons.keyboard_arrow_right, color: Colors.black, size: 30.0))
+                        );
+                      })
+              ),
+            ]
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.home),
