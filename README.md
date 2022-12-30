@@ -1,1 +1,2 @@
-this is mine. stop looking at it
+# Recog Classroom Attendance 
+Flutter applciation based on ML tech w/ FireBase & AWS backend.
